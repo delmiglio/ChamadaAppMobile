@@ -21,6 +21,9 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Domain", "Domain\Domain\Dom
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Domain\Domain\Domain.projitems*{9f612177-76d3-4662-9052-35db6f0a0e5b}*SharedItemsImports = 4
+		Domain\Domain\Domain.projitems*{ab50fa4f-1ac4-4da8-89b6-9afdd0728ab8}*SharedItemsImports = 4
+		Domain\Domain\Domain.projitems*{02bc9ef4-c0f1-4461-aff4-f8da33203ce3}*SharedItemsImports = 4
 		Domain\Domain\Domain.projitems*{10e62fc8-f03c-4523-bb94-b873b501a555}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
