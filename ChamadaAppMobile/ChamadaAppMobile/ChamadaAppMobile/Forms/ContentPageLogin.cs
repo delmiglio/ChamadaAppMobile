@@ -1,6 +1,11 @@
-﻿using ChamadaAppMobile.Forms;
+﻿using ChamadaApp.Domain.VO;
+using ChamadaAppMobile.Forms;
+using ChamadaAppMobile.Services;
+using ChamadaAppMobile.VO;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
@@ -78,8 +83,9 @@ namespace ChamadaAppMobile
                 }
                 else
                 {
-                    await Task.Delay(500);
-                    await Navigation.PushAsync(new ContentPageHome());
+                    /*await Task.Delay(500);
+                    await Navigation.PushAsync(new ContentPageHome());*/
+                    Teste();
                 }
             };
 
@@ -107,11 +113,69 @@ namespace ChamadaAppMobile
             {
                 _canClose = false;
 
-                if(!OnBackButtonPressed())
+                if (!OnBackButtonPressed())
                 {
                     throw new Exception();
                 }
             }
+        }
+
+        private void Teste()
+        {
+            GetRest apiCall = new GetRest();
+
+            //Aqui buscamos os 10 com as maiores Notas e Iniciamos uma Thread
+            apiCall.GetResponse<Retorno>("login", "login='032136886'&senha='rwnd'").ContinueWith(t =>
+            {
+                //O ContinueWith é responsavel por fazer algo após o request finalizar
+
+                //Aqui verificamos se houve problema ne requisição
+                if (t.IsFaulted)
+                {
+                    Debug.WriteLine(t.Exception.Message);
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        DisplayAlert("Falha", "Ocorreu um erro na Requisição :(", "Ok");
+                    });
+                }
+                //Aqui verificamos se a requisição foi cancelada por algum Motivo
+                else if (t.IsCanceled)
+                {
+                    Debug.WriteLine("Requisição cancelada");
+
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        DisplayAlert("Cancela", "Requisição Cancelada :O", "Ok");
+                    });
+                }
+                //Caso a requisição ocorra sem problemas, cairemos aqui
+                else
+                {
+                    //Se Chegarmos aqui, está tudo ok, agora itemos tratar nossa Lista
+                    //Aqui Usaremos a Thread Principal, ou seja, a que possui as references da UI
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        Retorno obj = new Retorno();
+
+                        UsuarioVO user = new UsuarioVO();
+
+                        if (t.Result is Retorno)
+                        {
+                            obj = (Retorno)t.Result;
+                            
+                            if(obj.ObjTypeName == user.GetType().Name)
+                            {
+                                string jsonUser = JsonConvert.SerializeObject(obj.ObjRetorno);
+
+                                user = JsonConvert.DeserializeObject<UsuarioVO>(jsonUser);
+                            }                            
+                        }
+
+                        DisplayAlert("Carregado", user.Nome.ToString(), "Ok");
+                    });
+
+                }
+            });
         }
     }
 }
