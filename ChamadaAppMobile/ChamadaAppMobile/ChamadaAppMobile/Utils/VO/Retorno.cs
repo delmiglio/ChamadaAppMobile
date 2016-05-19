@@ -11,7 +11,7 @@ namespace ChamadaAppMobile.VO
     /// </summary>
     public class Retorno
     {
-        public Enum TpRetorno { get; set; }
+        public int TpRetorno { get; set; }
 
         public string RetornoMensagem { get; set; }
 
