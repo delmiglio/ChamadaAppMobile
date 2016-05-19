@@ -1,21 +1,15 @@
 ﻿using ChamadaApp.Domain.VO;
-using ChamadaAppMobile.Forms;
 using ChamadaAppMobile.Services;
+using ChamadaAppMobile.Utils;
 using ChamadaAppMobile.VO;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace ChamadaAppMobile
 {
     public class ContentPageLogin : ContentPage
-    {
+    {       
         public ContentPageLogin()
         {
             Label labelLogin = new Label
@@ -84,7 +78,8 @@ namespace ChamadaAppMobile
                 else
                 {
                     /*await Task.Delay(500);
-                    await Navigation.PushAsync(new ContentPageHome());*/
+                    await Navigation.PushAsync(new ContentPageHome());*/                                     
+
                     Teste();
                 }
             };
@@ -123,8 +118,7 @@ namespace ChamadaAppMobile
         private void Teste()
         {
             GetRest apiCall = new GetRest();
-
-            //Aqui buscamos os 10 com as maiores Notas e Iniciamos uma Thread
+            
             apiCall.GetResponse<Retorno>("login", "login='032136886'&senha='rwnd'").ContinueWith(t =>
             {
                 //O ContinueWith é responsavel por fazer algo após o request finalizar
@@ -135,7 +129,7 @@ namespace ChamadaAppMobile
                     Debug.WriteLine(t.Exception.Message);
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        DisplayAlert("Falha", "Ocorreu um erro na Requisição :(", "Ok");
+                        DisplayAlert("Falha", "Ocorreu um erro na Requisição.", "Ok");
                     });
                 }
                 //Aqui verificamos se a requisição foi cancelada por algum Motivo
@@ -150,9 +144,7 @@ namespace ChamadaAppMobile
                 }
                 //Caso a requisição ocorra sem problemas, cairemos aqui
                 else
-                {
-                    //Se Chegarmos aqui, está tudo ok, agora itemos tratar nossa Lista
-                    //Aqui Usaremos a Thread Principal, ou seja, a que possui as references da UI
+                {                    
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         Retorno obj = new Retorno();
@@ -165,15 +157,12 @@ namespace ChamadaAppMobile
                             
                             if(obj.ObjTypeName == user.GetType().Name)
                             {
-                                string jsonUser = JsonConvert.SerializeObject(obj.ObjRetorno);
-
-                                user = JsonConvert.DeserializeObject<UsuarioVO>(jsonUser);
+                                user = Metodos.JsonToCustomObject<UsuarioVO>(obj.ObjRetorno);
                             }                            
                         }
 
                         DisplayAlert("Carregado", user.Nome.ToString(), "Ok");
                     });
-
                 }
             });
         }

@@ -14,7 +14,6 @@ namespace ChamadaAppMobile.Services
 
         public async Task<T> GetResponse<T>(string method, string param) where T : class
         {
-
             var client = new System.Net.Http.HttpClient();
 
             //Definide o Header de resultado para JSON, para evitar que seja retornado um HTML ou XML

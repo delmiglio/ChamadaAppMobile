@@ -6,8 +6,8 @@ namespace ChamadaApp.Api.Utils
 {
     public enum TpRetornoEnum
     {
-        Sucesso,
-        Erro,
-        SemRetorno
+        Sucesso = 1,
+        Erro = 2,
+        SemRetorno = 3
     }
 }
