@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChamadaAppMobile.Utils.DAO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,19 @@ namespace ChamadaAppMobile
 {
     public class App : Application
     {
+        static UsuarioDAO dataBase;
+
+        public static UsuarioDAO DataBase
+        {
+            get
+            {
+                if (dataBase == null)
+                    dataBase = new UsuarioDAO();
+
+                return dataBase;
+            }
+        }
+
         public App()
         {
             MainPage = new ContentPageLogin();
