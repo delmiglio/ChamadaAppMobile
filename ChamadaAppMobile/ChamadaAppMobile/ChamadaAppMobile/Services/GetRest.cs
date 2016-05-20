@@ -12,7 +12,7 @@ namespace ChamadaAppMobile.Services
     {
         static readonly string URL = "http://192.168.0.11/ChamadaApp.Api/api/{0}?{1}";
 
-        public async Task<T> GetResponse<T>(string method, string param) where T : class
+        public async Task<T> GetResponse<T>(string actionController, string paramametros) where T : class
         {
             var client = new System.Net.Http.HttpClient();
 
@@ -23,7 +23,7 @@ namespace ChamadaAppMobile.Services
             //da Internet, pode demorar muito, para que o aplicativo não trave usamos um método assincrono
             //e colocamos a keyword AWAIT, para que a Thread principal - UI - continuo sendo executada
             //e o método so volte a ser executado quando o download das informações for finalizado
-            var response = await client.GetAsync(string.Format(URL, method, param));
+            var response = await client.GetAsync(string.Format(URL, actionController, paramametros));
 
             //Lê a string retornada
             var JsonResult = response.Content.ReadAsStringAsync().Result;

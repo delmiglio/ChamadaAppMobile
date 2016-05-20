@@ -1,15 +1,18 @@
-﻿using ChamadaApp.Domain.VO;
+﻿using ChamadaApp.Api.Utils;
+using ChamadaApp.Domain.VO;
+using ChamadaAppMobile.Forms;
 using ChamadaAppMobile.Services;
 using ChamadaAppMobile.Utils;
 using ChamadaAppMobile.VO;
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace ChamadaAppMobile
 {
     public class ContentPageLogin : ContentPage
-    {       
+    {
         public ContentPageLogin()
         {
             Label labelLogin = new Label
@@ -77,10 +80,7 @@ namespace ChamadaAppMobile
                 }
                 else
                 {
-                    /*await Task.Delay(500);
-                    await Navigation.PushAsync(new ContentPageHome());*/                                     
-
-                    Teste();
+                    Autenticar(txtLogin.Text, txtSenha.Text);
                 }
             };
 
@@ -115,11 +115,13 @@ namespace ChamadaAppMobile
             }
         }
 
-        private void Teste()
+        private void Autenticar(string login, string senha)
         {
-            GetRest apiCall = new GetRest();
-            
-            apiCall.GetResponse<Retorno>("login", "login='032136886'&senha='rwnd'").ContinueWith(t =>
+            GetRest getLogin = new GetRest();
+
+            string parametros = string.Format("login=\'{0}\'&senha=\'{1}\'", login, senha);
+
+            getLogin.GetResponse<Retorno>("login", parametros).ContinueWith(t =>
             {
                 //O ContinueWith é responsavel por fazer algo após o request finalizar
 
@@ -135,33 +137,42 @@ namespace ChamadaAppMobile
                 //Aqui verificamos se a requisição foi cancelada por algum Motivo
                 else if (t.IsCanceled)
                 {
-                    Debug.WriteLine("Requisição cancelada");
-
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        DisplayAlert("Cancela", "Requisição Cancelada :O", "Ok");
+                        DisplayAlert("Cancela", "Requisição Cancelada.", "Ok");
                     });
                 }
                 //Caso a requisição ocorra sem problemas, cairemos aqui
                 else
-                {                    
+                {
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        Retorno obj = new Retorno();
-
+                        Retorno obj;
                         UsuarioVO user = new UsuarioVO();
 
                         if (t.Result is Retorno)
                         {
                             obj = (Retorno)t.Result;
-                            
-                            if(obj.ObjTypeName == user.GetType().Name)
-                            {
-                                user = Metodos.JsonToCustomObject<UsuarioVO>(obj.ObjRetorno);
-                            }                            
-                        }
 
-                        DisplayAlert("Carregado", user.Nome.ToString(), "Ok");
+                            if ((TpRetornoEnum)obj.TpRetorno == TpRetornoEnum.Sucesso && obj.ObjRetorno != null)
+                            {            
+                                if (obj.ObjTypeName == user.GetType().Name)
+                                {
+                                    user = Metodos.JsonToCustomObject<UsuarioVO>(obj.ObjRetorno);
+                                }
+
+                                Task.Delay(250);
+                                Navigation.PushAsync(new ContentPageHome());
+                            }  
+                            else if ((TpRetornoEnum)obj.TpRetorno == TpRetornoEnum.SemRetorno)
+                            {
+                                DisplayAlert(obj.RetornoMensagem, obj.RetornoDescricao, "Ok");
+                            }
+                            else
+                            {
+                                DisplayAlert(obj.RetornoMensagem, obj.RetornoDescricao, "Ok");
+                            }
+                        }                        
                     });
                 }
             });
