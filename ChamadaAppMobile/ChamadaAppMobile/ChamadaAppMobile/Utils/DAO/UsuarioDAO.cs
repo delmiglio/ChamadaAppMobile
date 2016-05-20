@@ -36,11 +36,11 @@ namespace ChamadaAppMobile.Utils.DAO
             }
         }
 
-        public IEnumerable<UsuarioVO> GetUniqueUser()
+        public UsuarioVO GetUniqueUser()
         {
             lock (locker)
             {
-                return dataBase.Query<UsuarioVO>("SELECT * FROM UsuarioVO ORDER BY Id ASC LIMIT 1");
+                return dataBase.Query<UsuarioVO>("SELECT * FROM UsuarioVO ORDER BY Id ASC LIMIT 1").First<UsuarioVO>();
             }
         }
 

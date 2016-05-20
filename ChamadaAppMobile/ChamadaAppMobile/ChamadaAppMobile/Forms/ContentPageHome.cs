@@ -11,42 +11,79 @@ namespace ChamadaAppMobile.Forms
 {
     public class ContentPageHome : ContentPage
     {
+        UsuarioVO usuario;
+
         public ContentPageHome()
         {
-            Label labelHome = new Label
+            InicializarUsuario();
+
+            ContentView Titulo = new ContentView
             {
-                Text = "HOME",
-                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-                FontAttributes = FontAttributes.Bold,
-                VerticalOptions = LayoutOptions.StartAndExpand,
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
-                TextColor = Color.White
+                BackgroundColor = Color.FromHex("1B4B67"),
+                Padding = new Thickness(25),
+                HorizontalOptions = LayoutOptions.Fill,
+                Content = new Label
+                {
+                    Text = "Página Inicial",
+                    FontSize = 30,
+                    FontAttributes = FontAttributes.Bold,
+                    TextColor = Color.White
+                }
             };
 
-            UsuarioVO usuario = App.DataBase.GetUsuario(1);
-
-            Label teste = new Label
+            ContentView footer = new ContentView
             {
-                Text = usuario.Nome + " " + usuario.Sobrenome,
-                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-                FontAttributes = FontAttributes.Bold,
-                VerticalOptions = LayoutOptions.CenterAndExpand,
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
-                TextColor = Color.White
+                BackgroundColor = Color.FromHex("1B4B67"),
+                Padding = new Thickness(20),
+                VerticalOptions = LayoutOptions.EndAndExpand,
+                HorizontalOptions = LayoutOptions.Fill,
+                                
+                Content = new Label
+                {
+                    Text = "Trabalho de Conclusão de Curso",
+                    FontSize = 20,
+                    HorizontalOptions = LayoutOptions.CenterAndExpand,
+                    FontAttributes = FontAttributes.Bold,
+                    TextColor = Color.White
+                }
             };
 
-            Content = new StackLayout
+            Label lbUsuario = new Label
+            {
+                Text = "Olá, " + usuario.ToString() + ".",
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                TextColor = Color.FromHex("1B4B67"),
+                FontAttributes = FontAttributes.Bold
+            };
+
+            StackLayout conteudo = new StackLayout
+            {
+                BackgroundColor = Color.White,
+
+                Children =
+                {
+                    lbUsuario
+                },
+
+                Padding = new Thickness(20)
+            };
+
+            this.Content = new StackLayout
             {
                 Children =
                 {
-                    labelHome,
-                    teste
+                    Titulo,
+                    conteudo,
+                    footer
                 }
             };
-            
 
-            this.BackgroundColor = Color.FromHex("1B4B67");
-            this.Padding = new Thickness(10);
+            this.BackgroundColor = Color.White;
+        }
+
+        private void InicializarUsuario()
+        {
+            usuario = App.DataBase.GetUniqueUser();
         }
     }
 }

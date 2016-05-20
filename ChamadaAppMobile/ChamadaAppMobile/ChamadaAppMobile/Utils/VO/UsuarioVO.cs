@@ -37,5 +37,10 @@ namespace ChamadaApp.Domain.VO
 
         public bool Ativo { get; set; }
 
+        public override string ToString()
+        {
+            return Nome + " " + Sobrenome;
+        }
+
     }
 }
