@@ -161,6 +161,8 @@ namespace ChamadaAppMobile
                                     user = Metodos.JsonToCustomObject<UsuarioVO>(obj.ObjRetorno);
                                 }
 
+                                App.DataBase.SaveUsuario(user);
+
                                 Task.Delay(250);
                                 Navigation.PushAsync(new ContentPageHome());
                             }  

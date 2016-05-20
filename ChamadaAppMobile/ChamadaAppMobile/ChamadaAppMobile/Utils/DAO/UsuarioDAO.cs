@@ -16,8 +16,15 @@ namespace ChamadaAppMobile.Utils.DAO
 
         public UsuarioDAO()
         {
-            dataBase = DependencyService.Get<IConfigDB>().GetConexao();
-            dataBase.CreateTable<UsuarioVO>();
+            try
+            {
+                dataBase = DependencyService.Get<IConfigDB>().GetConexao();
+                dataBase.CreateTable<UsuarioVO>();
+            }
+            catch(Exception erro)
+            {
+                System.Diagnostics.Debug.WriteLine(erro.Message);
+            }
         }
 
         public IEnumerable<UsuarioVO> GetUsuarios()
@@ -61,7 +68,8 @@ namespace ChamadaAppMobile.Utils.DAO
         {
             lock (locker)
             {
-                dataBase.DeleteAll<UsuarioVO>();
+                dataBase.DropTable<UsuarioVO>();
+                dataBase.CreateTable<UsuarioVO>();
             }
         }
     }

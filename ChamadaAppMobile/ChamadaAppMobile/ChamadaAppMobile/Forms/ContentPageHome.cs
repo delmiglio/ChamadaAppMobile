@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChamadaApp.Domain.VO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
@@ -20,13 +21,26 @@ namespace ChamadaAppMobile.Forms
                 VerticalOptions = LayoutOptions.StartAndExpand,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 TextColor = Color.White
-            };                       
+            };
+
+            UsuarioVO usuario = App.DataBase.GetUsuario(1);
+
+            Label teste = new Label
+            {
+                Text = usuario.Nome + " " + usuario.Sobrenome,
+                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
+                FontAttributes = FontAttributes.Bold,
+                VerticalOptions = LayoutOptions.CenterAndExpand,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                TextColor = Color.White
+            };
 
             Content = new StackLayout
             {
                 Children =
                 {
-                    labelHome
+                    labelHome,
+                    teste
                 }
             };
             

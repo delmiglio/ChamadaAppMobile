@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using SQLite;
 using System;
 
 namespace ChamadaApp.Domain.VO
@@ -9,33 +10,23 @@ namespace ChamadaApp.Domain.VO
         {
 
         }
-        /*
-        public UsuarioVO(object obj)
-        {
-            JObject jObject = JObject.Parse(obj);
-            JToken jUser = jObject["UsuarioVO"];
-            Id = (int)jUser["Id"];
-            Nome = (string)jUser["Nome"];
-            Sobrenome = (string)jUser["Sobrenome"];
-            Login = (string)jUser["Login"];
-            Senha = (string)jUser["Senha"];
-            Token = (string)jUser["Token"]; ;
-            TpUsuario = (int)jUser["TpUsuario"]; ;
-            DtCriacao = (string)jUser["DtCriacao"]; ;
-            DtAlteracao = (string)jUser["DtAlteracao"]; ;
-            Ativo = (bool)jUser["Ativo"]; ;
-        }*/
-
+        
+        [PrimaryKey]
         public int Id { get; set; }
 
+        [MaxLength(100)]
         public string Nome { get; set; }
 
+        [MaxLength(200)]
         public string Sobrenome { get; set; }
 
+        [MaxLength(20)]
         public string Login { get; set; }
 
+        [MaxLength(20)]
         public string Senha { get; set; }
 
+        [MaxLength(200)]
         public string Token { get; set; }
 
         public int TpUsuario { get; set; }
