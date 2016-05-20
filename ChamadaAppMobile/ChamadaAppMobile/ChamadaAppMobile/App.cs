@@ -1,4 +1,5 @@
-﻿using ChamadaAppMobile.Utils.DAO;
+﻿using ChamadaAppMobile.Forms;
+using ChamadaAppMobile.Utils.DAO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,15 @@ namespace ChamadaAppMobile
 
         public App()
         {
-            MainPage = new ContentPageLogin();
+            MainPage = GetHome();
+        }
+
+        private ContentPage GetHome()
+        {
+            if (App.DataBase.GetUniqueUser() != null)
+                return new ContentPageHome();
+            else
+                return new ContentPageLogin();
         }
 
         protected override void OnStart()

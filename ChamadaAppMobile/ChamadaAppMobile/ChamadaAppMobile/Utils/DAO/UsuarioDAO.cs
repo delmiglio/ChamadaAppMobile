@@ -16,15 +16,8 @@ namespace ChamadaAppMobile.Utils.DAO
 
         public UsuarioDAO()
         {
-            try
-            {
-                dataBase = DependencyService.Get<IConfigDB>().GetConexao();
-                dataBase.CreateTable<UsuarioVO>();
-            }
-            catch(Exception erro)
-            {
-                System.Diagnostics.Debug.WriteLine(erro.Message);
-            }
+            dataBase = DependencyService.Get<IConfigDB>().GetConexao();
+            dataBase.CreateTable<UsuarioVO>();
         }
 
         public IEnumerable<UsuarioVO> GetUsuarios()
@@ -40,6 +33,14 @@ namespace ChamadaAppMobile.Utils.DAO
             lock (locker)
             {
                 return dataBase.Table<UsuarioVO>().FirstOrDefault(x => x.Id == usuarioId);
+            }
+        }
+
+        public IEnumerable<UsuarioVO> GetUniqueUser()
+        {
+            lock (locker)
+            {
+                return dataBase.Query<UsuarioVO>("SELECT * FROM UsuarioVO ORDER BY Id ASC LIMIT 1");
             }
         }
 

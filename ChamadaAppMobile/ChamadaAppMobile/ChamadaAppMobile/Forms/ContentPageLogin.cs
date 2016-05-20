@@ -86,7 +86,7 @@ namespace ChamadaAppMobile
 
             this.BackgroundColor = Color.FromHex("1B4B67");
             this.Padding = new Thickness(10);
-        }
+        }        
 
         private bool _canClose = true;
 
@@ -161,7 +161,8 @@ namespace ChamadaAppMobile
                                     user = Metodos.JsonToCustomObject<UsuarioVO>(obj.ObjRetorno);
                                 }
 
-                                App.DataBase.SaveUsuario(user);
+                                if(App.DataBase.GetUsuario(user.Id) == null)
+                                    App.DataBase.SaveUsuario(user);
 
                                 Task.Delay(250);
                                 Navigation.PushAsync(new ContentPageHome());
