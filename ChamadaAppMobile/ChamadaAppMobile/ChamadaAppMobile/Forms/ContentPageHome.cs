@@ -19,7 +19,7 @@ namespace ChamadaAppMobile.Forms
         ChamadaForPresencaVO chamada;
 
         public ContentPageHome()
-        {
+        {           
             InicializarUsuario();
 
             ContentView Header = new ContentView
@@ -106,7 +106,7 @@ namespace ChamadaAppMobile.Forms
 
             this.BackgroundColor = Color.White;
 
-            GetMateriaChamada(dadosChamada, scroll);
+            GetMateriaChamada(dadosChamada, scroll);            
         }
 
         private void InicializarUsuario()
@@ -234,6 +234,33 @@ namespace ChamadaAppMobile.Forms
                     }
                 }
             };
+        }
+
+        private bool _canClose = true;
+
+        protected override bool OnBackButtonPressed()
+        {
+            if (_canClose)
+            {
+                ShowExitDialog();
+            }
+
+            return _canClose;
+        }
+
+        private async void ShowExitDialog()
+        {
+            var answer = await DisplayAlert("Sair", "Deseja fechar o aplicativo?", "Sim", "Não");
+
+            if (answer)
+            {
+                _canClose = false;
+
+                if (!OnBackButtonPressed())
+                {
+                    throw new Exception();
+                }
+            }
         }
     }
 }

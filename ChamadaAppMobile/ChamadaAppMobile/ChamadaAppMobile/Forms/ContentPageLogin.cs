@@ -86,7 +86,7 @@ namespace ChamadaAppMobile
 
             this.BackgroundColor = Color.FromHex("1B4B67");
             this.Padding = new Thickness(10);
-        }        
+        }
 
         private bool _canClose = true;
 
@@ -155,18 +155,19 @@ namespace ChamadaAppMobile
                             obj = (Retorno)t.Result;
 
                             if ((TpRetornoEnum)obj.TpRetorno == TpRetornoEnum.Sucesso && obj.ObjRetorno != null)
-                            {            
+                            {
                                 if (obj.ObjTypeName == user.GetType().Name)
                                 {
                                     user = Metodos.JsonToCustomObject<UsuarioVO>(obj.ObjRetorno);
                                 }
 
-                                if(App.DataBase.GetUsuario(user.Id) == null)
+                                if (App.DataBase.GetUsuario(user.Id) == null)
                                     App.DataBase.SaveUsuario(user);
 
-                                Task.Delay(250);
-                                Navigation.PushAsync(new ContentPageHome());
-                            }  
+                                //Navigation.PushAsync(new ContentPageHome());
+
+                                Application.Current.MainPage = new ContentPageHome();                              
+                            }
                             else if ((TpRetornoEnum)obj.TpRetorno == TpRetornoEnum.SemRetorno)
                             {
                                 DisplayAlert(obj.RetornoMensagem, obj.RetornoDescricao, "Ok");
@@ -175,7 +176,7 @@ namespace ChamadaAppMobile
                             {
                                 DisplayAlert(obj.RetornoMensagem, obj.RetornoDescricao, "Ok");
                             }
-                        }                        
+                        }
                     });
                 }
             });
