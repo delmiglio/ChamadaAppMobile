@@ -26,7 +26,6 @@ namespace ChamadaAppMobile.Droid
 		
 		public static void UpdateIdValues()
 		{
-			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::ChamadaAppMobile.Droid.Resource.Attribute.actionBarSize;
 		}
 		
 		public partial class Attribute
