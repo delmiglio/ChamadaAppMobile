@@ -40,7 +40,12 @@ namespace ChamadaAppMobile.Utils.DAO
         {
             lock (locker)
             {
-                return dataBase.Query<UsuarioVO>("SELECT * FROM UsuarioVO ORDER BY Id ASC LIMIT 1").First<UsuarioVO>();
+                List<UsuarioVO> usuarios = dataBase.Query<UsuarioVO>("SELECT * FROM UsuarioVO ORDER BY Id ASC LIMIT 1");
+
+                if (usuarios.Count > 0)
+                    return usuarios.FirstOrDefault<UsuarioVO>();
+
+                return null;
             }
         }
 

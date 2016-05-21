@@ -17,12 +17,12 @@ namespace ChamadaAppMobile.Forms
     {
         UsuarioVO usuario;
         ChamadaForPresencaVO chamada;
-        
+
         public ContentPageHome()
         {
             InicializarUsuario();
 
-            ContentView Titulo = new ContentView
+            ContentView Header = new ContentView
             {
                 BackgroundColor = Color.FromHex("1B4B67"),
                 Padding = new Thickness(25),
@@ -52,7 +52,7 @@ namespace ChamadaAppMobile.Forms
                 Padding = new Thickness(20),
                 VerticalOptions = LayoutOptions.EndAndExpand,
                 HorizontalOptions = LayoutOptions.Fill,
-                                
+
                 Content = new Label
                 {
                     Text = "Trabalho de Conclusão de Curso",
@@ -70,25 +70,35 @@ namespace ChamadaAppMobile.Forms
                 TextColor = Color.FromHex("1B4B67"),
                 FontAttributes = FontAttributes.Bold
             };
+            
+
+            ScrollView scroll = new ScrollView
+            {
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand,   
+                IsVisible = false             
+            };
 
             StackLayout conteudo = new StackLayout
             {
-                BackgroundColor = Color.White,
+                BackgroundColor = Color.White,                              
 
                 Children =
                 {
                     lbUsuario,
-                    dadosChamada
+                    dadosChamada,
+                    scroll                    
                 },
 
                 Padding = new Thickness(20)
             };
 
+
             this.Content = new StackLayout
             {
                 Children =
                 {
-                    Titulo,
+                    Header,
                     conteudo,
                     footer
                 }
@@ -96,7 +106,7 @@ namespace ChamadaAppMobile.Forms
 
             this.BackgroundColor = Color.White;
 
-            GetMateriaChamada(dadosChamada);
+            GetMateriaChamada(dadosChamada, scroll);
         }
 
         private void InicializarUsuario()
@@ -104,10 +114,10 @@ namespace ChamadaAppMobile.Forms
             usuario = App.DataBase.GetUniqueUser();
         }
 
-        private void GetMateriaChamada(ContentView view)
+        private void GetMateriaChamada(ContentView view, ScrollView scroll)
         {
             Label lb = new Label
-            {                
+            {
                 FontSize = 20,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 FontAttributes = FontAttributes.Bold,
@@ -116,15 +126,15 @@ namespace ChamadaAppMobile.Forms
 
             GetRest getChamada = new GetRest();
 
-            string parametros = string.Format("alunoId={0}", 3);//usuario.Id);
+            string parametros = string.Format("alunoId={0}", usuario.Id);
 
             getChamada.GetResponse<Retorno>("chamada", parametros).ContinueWith(t =>
-            {                
-                if(t.IsCompleted)
+            {
+                if (t.IsCompleted)
                 {
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        Retorno obj;                       
+                        Retorno obj;
 
                         if (t.Result is Retorno)
                         {
@@ -137,21 +147,93 @@ namespace ChamadaAppMobile.Forms
                                     chamada = Metodos.JsonToCustomObject<ChamadaForPresencaVO>(obj.ObjRetorno);
                                 }
 
-                                view.BackgroundColor = Color.FromHex("328325");                                                  
+                                view.BackgroundColor = Color.FromHex("328325");
                             }
-                            else if((TpRetornoEnum)obj.TpRetorno == TpRetornoEnum.Erro)
+                            else if ((TpRetornoEnum)obj.TpRetorno == TpRetornoEnum.Erro)
                             {
-                                view.BackgroundColor = Color.FromHex("A63030");                                
+                                view.BackgroundColor = Color.FromHex("A63030");
                             }
 
-                            lb.Text = obj.RetornoMensagem + ((!string.IsNullOrWhiteSpace(obj.RetornoDescricao)) ? 
+                            lb.Text = obj.RetornoMensagem + ((!string.IsNullOrWhiteSpace(obj.RetornoDescricao)) ?
                                                                 (Environment.NewLine + obj.RetornoDescricao) : "");
                             view.IsVisible = true;
                             view.Content = lb;
+
+                            GetDadosChamada(chamada, scroll);
                         }
                     });
                 }
             });
+        }
+
+        private void GetDadosChamada(ChamadaForPresencaVO chamada, ScrollView scroll)
+        {
+            scroll.IsVisible = true;
+
+            scroll.Content = new StackLayout
+            {
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+
+                Children =
+                {
+                    new Label
+                    {
+                        Text = "Matéria",
+                        FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
+                        VerticalOptions = LayoutOptions.Start,
+                        HorizontalOptions = LayoutOptions.Start,
+                        TextColor = Color.Black
+                    },
+
+                    new Label
+                    {
+                        Text = chamada.Materia,
+                        FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                        VerticalOptions = LayoutOptions.Start,
+                        HorizontalOptions = LayoutOptions.Start,
+                        FontAttributes = FontAttributes.Bold,
+                        TextColor = Color.FromHex("1B4B67")
+                    },
+
+                    new Label
+                    {
+                        Text = "Professor",
+                        FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
+                        VerticalOptions = LayoutOptions.Start,
+                        HorizontalOptions = LayoutOptions.Start,
+                        TextColor = Color.Black
+                    },
+
+                    new Label
+                    {
+                        Text = chamada.Professor,
+                        FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                        VerticalOptions = LayoutOptions.Start,
+                        HorizontalOptions = LayoutOptions.Start,
+                        FontAttributes = FontAttributes.Bold,
+                        TextColor = Color.FromHex("1B4B67")
+                    },
+
+                    new Label
+                    {
+                        Text = "Situação",
+                        FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
+                        VerticalOptions = LayoutOptions.Start,
+                        HorizontalOptions = LayoutOptions.Start,
+                        TextColor = Color.Black
+                    },
+
+                    new Label
+                    {
+                        Text = chamada.Situacao,
+                        FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                        VerticalOptions = LayoutOptions.Start,
+                        HorizontalOptions = LayoutOptions.Start,
+                        FontAttributes = FontAttributes.Bold,
+                        TextColor = Color.Red
+                    }
+                }
+            };
         }
     }
 }

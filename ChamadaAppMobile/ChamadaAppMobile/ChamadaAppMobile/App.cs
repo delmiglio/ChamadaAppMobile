@@ -36,7 +36,7 @@ namespace ChamadaAppMobile
             else
                 return new ContentPageLogin();
         }
-
+                
         protected override void OnStart()
         {
             
