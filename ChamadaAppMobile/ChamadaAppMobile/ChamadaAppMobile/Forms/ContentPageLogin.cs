@@ -11,7 +11,7 @@ using Xamarin.Forms;
 
 namespace ChamadaAppMobile
 {
-    public class ContentPageLogin : ContentPage
+    public class ContentPageLogin : ContentPageBase
     {
         public ContentPageLogin()
         {
@@ -87,34 +87,7 @@ namespace ChamadaAppMobile
             this.BackgroundColor = Color.FromHex("1B4B67");
             this.Padding = new Thickness(10);
         }
-
-        private bool _canClose = true;
-
-        protected override bool OnBackButtonPressed()
-        {
-            if (_canClose)
-            {
-                ShowExitDialog();
-            }
-
-            return _canClose;
-        }
-
-        private async void ShowExitDialog()
-        {
-            var answer = await DisplayAlert("Sair", "Deseja fechar o aplicativo?", "Sim", "Não");
-
-            if (answer)
-            {
-                _canClose = false;
-
-                if (!OnBackButtonPressed())
-                {
-                    throw new Exception();
-                }
-            }
-        }
-
+        
         private void Autenticar(string login, string senha)
         {
             GetRest getLogin = new GetRest();
@@ -163,9 +136,7 @@ namespace ChamadaAppMobile
 
                                 if (App.DataBase.GetUsuario(user.Id) == null)
                                     App.DataBase.SaveUsuario(user);
-
-                                //Navigation.PushAsync(new ContentPageHome());
-
+                                
                                 Application.Current.MainPage = new ContentPageHome();                              
                             }
                             else if ((TpRetornoEnum)obj.TpRetorno == TpRetornoEnum.SemRetorno)

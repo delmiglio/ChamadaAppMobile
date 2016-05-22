@@ -13,13 +13,13 @@ using Xamarin.Forms;
 
 namespace ChamadaAppMobile.Forms
 {
-    public class ContentPageHome : ContentPage
+    public class ContentPageHome : ContentPageBase
     {
         UsuarioVO usuario;
         ChamadaForPresencaVO chamada;
 
         public ContentPageHome()
-        {           
+        {
             InicializarUsuario();
 
             ContentView Header = new ContentView
@@ -70,24 +70,24 @@ namespace ChamadaAppMobile.Forms
                 TextColor = Color.FromHex("1B4B67"),
                 FontAttributes = FontAttributes.Bold
             };
-            
+
 
             ScrollView scroll = new ScrollView
             {
                 VerticalOptions = LayoutOptions.FillAndExpand,
-                HorizontalOptions = LayoutOptions.FillAndExpand,   
-                IsVisible = false             
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                IsVisible = false
             };
 
             StackLayout conteudo = new StackLayout
             {
-                BackgroundColor = Color.White,                              
+                BackgroundColor = Color.White,
 
                 Children =
                 {
                     lbUsuario,
                     dadosChamada,
-                    scroll                    
+                    scroll
                 },
 
                 Padding = new Thickness(20)
@@ -106,7 +106,7 @@ namespace ChamadaAppMobile.Forms
 
             this.BackgroundColor = Color.White;
 
-            GetMateriaChamada(dadosChamada, scroll);            
+            GetMateriaChamada(dadosChamada, scroll);
         }
 
         private void InicializarUsuario()
@@ -234,33 +234,6 @@ namespace ChamadaAppMobile.Forms
                     }
                 }
             };
-        }
-
-        private bool _canClose = true;
-
-        protected override bool OnBackButtonPressed()
-        {
-            if (_canClose)
-            {
-                ShowExitDialog();
-            }
-
-            return _canClose;
-        }
-
-        private async void ShowExitDialog()
-        {
-            var answer = await DisplayAlert("Sair", "Deseja fechar o aplicativo?", "Sim", "Não");
-
-            if (answer)
-            {
-                _canClose = false;
-
-                if (!OnBackButtonPressed())
-                {
-                    throw new Exception();
-                }
-            }
-        }
+        }        
     }
 }
