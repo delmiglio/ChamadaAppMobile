@@ -32,7 +32,7 @@ namespace ChamadaAppMobile
         private ContentPage GetHome()
         {
             if (App.DataBase.GetUniqueUser() != null)
-                return new ContentPageHome();
+                return new ContentPageHomeAluno();
             else
                 return new ContentPageLogin();
         }

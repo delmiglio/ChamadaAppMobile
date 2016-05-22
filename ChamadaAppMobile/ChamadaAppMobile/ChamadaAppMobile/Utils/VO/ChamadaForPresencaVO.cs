@@ -7,12 +7,7 @@ using System.Threading.Tasks;
 namespace ChamadaAppMobile.VO
 {
     public class ChamadaForPresencaVO
-    {
-        public ChamadaForPresencaVO()
-        {
-
-        }        
-
+    {      
         public int Id { get; set; }
 
         public int AlunoId { get; set; }

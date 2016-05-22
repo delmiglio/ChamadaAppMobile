@@ -13,12 +13,16 @@ using Xamarin.Forms;
 
 namespace ChamadaAppMobile.Forms
 {
-    public class ContentPageHome : ContentPageBase
+    public class ContentPageHomeAluno : ContentPageBase
     {
         UsuarioVO usuario;
         ChamadaForPresencaVO chamada;
 
-        public ContentPageHome()
+        ScrollView scroll;
+        ContentView dadosChamada;
+        Button btnResponderChamada;
+
+        public ContentPageHomeAluno()
         {
             InicializarUsuario();
 
@@ -36,7 +40,7 @@ namespace ChamadaAppMobile.Forms
                 }
             };
 
-            ContentView dadosChamada = new ContentView
+            dadosChamada = new ContentView
             {
                 BackgroundColor = Color.FromHex("434E4E"),
                 Padding = new Thickness(20, 15),
@@ -72,11 +76,29 @@ namespace ChamadaAppMobile.Forms
             };
 
 
-            ScrollView scroll = new ScrollView
+            scroll = new ScrollView
             {
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 IsVisible = false
+            };
+
+            btnResponderChamada = new Button
+            {
+                Text = "Responder Chamada",
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                VerticalOptions = LayoutOptions.Start,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                FontAttributes = FontAttributes.Bold,
+                TextColor = Color.FromHex("1B4B67"),
+                BorderWidth = 5,
+                BorderColor = Color.FromHex("1B4B67"),
+                Margin = new Thickness(0, 30),
+            };
+
+            btnResponderChamada.Clicked += (sender, args) =>
+            {
+                ResponderChamada(chamada.Id);
             };
 
             StackLayout conteudo = new StackLayout
@@ -106,7 +128,7 @@ namespace ChamadaAppMobile.Forms
 
             this.BackgroundColor = Color.White;
 
-            GetMateriaChamada(dadosChamada, scroll);
+            GetMateriaChamada();
         }
 
         private void InicializarUsuario()
@@ -114,7 +136,7 @@ namespace ChamadaAppMobile.Forms
             usuario = App.DataBase.GetUniqueUser();
         }
 
-        private void GetMateriaChamada(ContentView view, ScrollView scroll)
+        private void GetMateriaChamada()
         {
             Label lb = new Label
             {
@@ -124,7 +146,7 @@ namespace ChamadaAppMobile.Forms
                 TextColor = Color.White
             };
 
-            GetRest getChamada = new GetRest();
+            ConsumeRest getChamada = new ConsumeRest();
 
             string parametros = string.Format("alunoId={0}", usuario.Id);
 
@@ -147,26 +169,26 @@ namespace ChamadaAppMobile.Forms
                                     chamada = Metodos.JsonToCustomObject<ChamadaForPresencaVO>(obj.ObjRetorno);
                                 }
 
-                                view.BackgroundColor = Color.FromHex("328325");
+                                dadosChamada.BackgroundColor = Color.FromHex("328325");
                             }
                             else if ((TpRetornoEnum)obj.TpRetorno == TpRetornoEnum.Erro)
                             {
-                                view.BackgroundColor = Color.FromHex("A63030");
+                                dadosChamada.BackgroundColor = Color.FromHex("A63030");
                             }
 
                             lb.Text = obj.RetornoMensagem + ((!string.IsNullOrWhiteSpace(obj.RetornoDescricao)) ?
                                                                 (Environment.NewLine + obj.RetornoDescricao) : "");
-                            view.IsVisible = true;
-                            view.Content = lb;
+                            dadosChamada.IsVisible = true;
+                            dadosChamada.Content = lb;
 
-                            GetDadosChamada(chamada, scroll);
+                            GetDadosChamada(chamada);
                         }
                     });
                 }
             });
         }
 
-        private void GetDadosChamada(ChamadaForPresencaVO chamada, ScrollView scroll)
+        private void GetDadosChamada(ChamadaForPresencaVO chamada)
         {
             scroll.IsVisible = true;
 
@@ -231,9 +253,57 @@ namespace ChamadaAppMobile.Forms
                         HorizontalOptions = LayoutOptions.Start,
                         FontAttributes = FontAttributes.Bold,
                         TextColor = Color.Red
-                    }
+                    },
+
+                    btnResponderChamada                    
                 }
             };
+        }        
+
+        private void ResponderChamada(int alunoChamadaId)
+        {
+            Label lb = new Label
+            {
+                FontSize = 20,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                FontAttributes = FontAttributes.Bold,
+                TextColor = Color.White
+            };
+
+            ConsumeRest putChamada = new ConsumeRest();
+
+            string parametros = string.Format("alunoChamadaId={0}", alunoChamadaId);
+
+            putChamada.PutResponse<Retorno>("chamada", parametros).ContinueWith(t =>
+            {
+                if (t.IsCompleted)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        Retorno obj;
+
+                        if (t.Result is Retorno)
+                        {
+                            obj = (Retorno)t.Result;
+
+                            if ((TpRetornoEnum)obj.TpRetorno == TpRetornoEnum.Sucesso && obj.ObjRetorno != null)
+                            {
+                                dadosChamada.BackgroundColor = Color.FromHex("328325");
+                                scroll.Content = null;
+                            }
+                            else if ((TpRetornoEnum)obj.TpRetorno == TpRetornoEnum.Erro)
+                            {
+                                dadosChamada.BackgroundColor = Color.FromHex("A63030");
+                            }
+
+                            lb.Text = obj.RetornoMensagem + ((!string.IsNullOrWhiteSpace(obj.RetornoDescricao)) ?
+                                                                (Environment.NewLine + obj.RetornoDescricao) : "");
+                            dadosChamada.IsVisible = true;
+                            dadosChamada.Content = lb;
+                        }
+                    });
+                }
+            });
         }        
     }
 }

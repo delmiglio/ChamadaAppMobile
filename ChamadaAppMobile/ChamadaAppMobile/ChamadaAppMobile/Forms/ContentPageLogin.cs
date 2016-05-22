@@ -90,7 +90,7 @@ namespace ChamadaAppMobile
         
         private void Autenticar(string login, string senha)
         {
-            GetRest getLogin = new GetRest();
+            ConsumeRest getLogin = new ConsumeRest();
 
             string parametros = string.Format("login=\'{0}\'&senha=\'{1}\'", login, senha);
 
@@ -137,7 +137,7 @@ namespace ChamadaAppMobile
                                 if (App.DataBase.GetUsuario(user.Id) == null)
                                     App.DataBase.SaveUsuario(user);
                                 
-                                Application.Current.MainPage = new ContentPageHome();                              
+                                Application.Current.MainPage = new ContentPageHomeAluno();                              
                             }
                             else if ((TpRetornoEnum)obj.TpRetorno == TpRetornoEnum.SemRetorno)
                             {

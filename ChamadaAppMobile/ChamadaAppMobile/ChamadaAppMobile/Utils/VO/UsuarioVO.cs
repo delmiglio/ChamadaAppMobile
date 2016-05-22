@@ -5,12 +5,7 @@ using System;
 namespace ChamadaApp.Domain.VO
 {
     public class UsuarioVO
-    {
-        public UsuarioVO()
-        {
-
-        }
-        
+    {        
         [PrimaryKey]
         public int Id { get; set; }
 
@@ -36,6 +31,9 @@ namespace ChamadaApp.Domain.VO
         public string DtAlteracao { get; set; }
 
         public bool Ativo { get; set; }
+
+        [MaxLength(50)]
+        public string TpUsuarioDesc { get; set; }
 
         public override string ToString()
         {
