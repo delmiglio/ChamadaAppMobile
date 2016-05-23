@@ -98,7 +98,7 @@ namespace ChamadaAppMobile.Forms
 
             btnResponderChamada.Clicked += (sender, args) =>
             {
-                ResponderChamada(chamada.Id);
+                ResponderChamada(chamada);
             };
 
             StackLayout conteudo = new StackLayout
@@ -170,6 +170,7 @@ namespace ChamadaAppMobile.Forms
                                 }
 
                                 dadosChamada.BackgroundColor = Color.FromHex("328325");
+                                GetDadosChamada(chamada);
                             }
                             else if ((TpRetornoEnum)obj.TpRetorno == TpRetornoEnum.Erro)
                             {
@@ -181,7 +182,7 @@ namespace ChamadaAppMobile.Forms
                             dadosChamada.IsVisible = true;
                             dadosChamada.Content = lb;
 
-                            GetDadosChamada(chamada);
+                            
                         }
                     });
                 }
@@ -260,7 +261,7 @@ namespace ChamadaAppMobile.Forms
             };
         }        
 
-        private void ResponderChamada(int alunoChamadaId)
+        private void ResponderChamada(ChamadaForPresencaVO alunoChamada)
         {
             Label lb = new Label
             {
@@ -270,11 +271,9 @@ namespace ChamadaAppMobile.Forms
                 TextColor = Color.White
             };
 
-            ConsumeRest putChamada = new ConsumeRest();
+            ConsumeRest putChamada = new ConsumeRest();            
 
-            string parametros = string.Format("alunoChamadaId={0}", alunoChamadaId);
-
-            putChamada.PutResponse<Retorno>("chamada", parametros).ContinueWith(t =>
+            putChamada.PutResponse<Retorno>("chamada", alunoChamada).ContinueWith(t =>
             {
                 if (t.IsCompleted)
                 {
