@@ -285,7 +285,7 @@ namespace ChamadaAppMobile.Forms
                         {
                             obj = (Retorno)t.Result;
 
-                            if ((TpRetornoEnum)obj.TpRetorno == TpRetornoEnum.Sucesso && obj.ObjRetorno != null)
+                            if ((TpRetornoEnum)obj.TpRetorno == TpRetornoEnum.Sucesso)
                             {
                                 dadosChamada.BackgroundColor = Color.FromHex("328325");
                                 scroll.Content = null;

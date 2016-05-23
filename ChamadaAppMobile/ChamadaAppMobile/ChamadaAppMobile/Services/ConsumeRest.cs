@@ -16,7 +16,7 @@ namespace ChamadaAppMobile.Services
     {
         static readonly string baseURL = "http://192.168.0.11/api/";
         static readonly string getURL = baseURL + "{0}?{1}";
-        static readonly string putURL = baseURL + "chamada/ResponderChamada";
+        static readonly string putURL = baseURL + "chamada";
 
         HttpClient client;
 
