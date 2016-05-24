@@ -21,47 +21,8 @@ namespace ChamadaAppMobile.Forms
         Button btnResponderChamada;
 
         public ContentPageHomeAluno()
-        {     
-            ContentView Header = new ContentView
-            {
-                BackgroundColor = Color.FromHex("1B4B67"),
-                Padding = new Thickness(25),
-                HorizontalOptions = LayoutOptions.Fill,
-                Content = new Label
-                {
-                    Text = "Página Inicial",
-                    FontSize = 30,
-                    FontAttributes = FontAttributes.Bold,
-                    TextColor = Color.White
-                }
-            };
-
-            dadosChamada = new ContentView
-            {
-                BackgroundColor = Color.FromHex("434E4E"),
-                Padding = new Thickness(20, 15),
-                Margin = new Thickness(0, 20),
-                VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.Fill,
-                IsVisible = false
-            };
-
-            ContentView footer = new ContentView
-            {
-                BackgroundColor = Color.FromHex("1B4B67"),
-                Padding = new Thickness(20),
-                VerticalOptions = LayoutOptions.EndAndExpand,
-                HorizontalOptions = LayoutOptions.Fill,
-
-                Content = new Label
-                {
-                    Text = "Trabalho de Conclusão de Curso",
-                    FontSize = 20,
-                    HorizontalOptions = LayoutOptions.CenterAndExpand,
-                    FontAttributes = FontAttributes.Bold,
-                    TextColor = Color.White
-                }
-            };
+        {
+            dadosChamada = GetMessageDefault();
 
             Label lbUsuario = new Label
             {
@@ -70,7 +31,6 @@ namespace ChamadaAppMobile.Forms
                 TextColor = Color.FromHex("1B4B67"),
                 FontAttributes = FontAttributes.Bold
             };
-
 
             scroll = new ScrollView
             {
@@ -111,14 +71,13 @@ namespace ChamadaAppMobile.Forms
                 Padding = new Thickness(20)
             };
 
-
             this.Content = new StackLayout
             {
                 Children =
                 {
-                    Header,
+                    GetHeader("Página Inicial"),
                     conteudo,
-                    footer
+                    GetFooter()
                 }
             };
 

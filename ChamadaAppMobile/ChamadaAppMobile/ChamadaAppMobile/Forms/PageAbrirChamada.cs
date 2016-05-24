@@ -13,7 +13,7 @@ using Xamarin.Forms;
 
 namespace ChamadaAppMobile.Forms
 {
-    public class PageAbrirChamada : ContentPage
+    public class PageAbrirChamada : MasterPage
     {
         UsuarioVO usuario;
         MateriaForChamadaVO materia;
@@ -26,58 +26,11 @@ namespace ChamadaAppMobile.Forms
         {
             this.usuario = user;
 
-            ContentView Header = new ContentView
-            {
-                BackgroundColor = Color.FromHex("1B4B67"),
-                Padding = new Thickness(25),
-                HorizontalOptions = LayoutOptions.Fill,
-                Content = new Label
-                {
-                    Text = "Abrir Chamada",
-                    FontSize = 30,
-                    FontAttributes = FontAttributes.Bold,
-                    TextColor = Color.White
-                }
-            };
-
-            ContentView footer = new ContentView
-            {
-                BackgroundColor = Color.FromHex("1B4B67"),
-                Padding = new Thickness(20),
-                VerticalOptions = LayoutOptions.EndAndExpand,
-                HorizontalOptions = LayoutOptions.Fill,
-
-                Content = new Label
-                {
-                    Text = "Trabalho de Conclusão de Curso",
-                    FontSize = 20,
-                    HorizontalOptions = LayoutOptions.CenterAndExpand,
-                    FontAttributes = FontAttributes.Bold,
-                    TextColor = Color.White
-                }
-            };
-
-            dadosMateria = new ContentView
-            {
-                BackgroundColor = Color.FromHex("434E4E"),
-                Padding = new Thickness(20, 15),
-                Margin = new Thickness(0, 20),
-                VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.Fill,
-                IsVisible = true,
-                Content = new Label
-                {
-                    Text = "Aguarde...",
-                    FontSize = 20,
-                    HorizontalOptions = LayoutOptions.CenterAndExpand,
-                    FontAttributes = FontAttributes.Bold,
-                    TextColor = Color.White
-                }
-            };
+            dadosMateria = GetMessageDefault();
 
             btnAbrirChamada = new Button
             {
-                Text = "Responder Chamada",
+                Text = "ABRIR CHAMADA",
                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                 VerticalOptions = LayoutOptions.Start,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
@@ -110,9 +63,9 @@ namespace ChamadaAppMobile.Forms
             {
                 Children =
                 {
-                    Header,
+                    GetHeader("Abrir Chamada"),
                     conteudo,
-                    footer
+                    GetFooter()
                 }
             };
 

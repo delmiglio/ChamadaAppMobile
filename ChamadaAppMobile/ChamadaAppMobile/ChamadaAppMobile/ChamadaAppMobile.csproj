@@ -48,7 +48,9 @@
     <Compile Include="Forms\ContentPageHomeAluno.cs" />
     <Compile Include="Forms\ContentPageHomeProfessor.cs" />
     <Compile Include="Forms\ContentPageLogin.cs" />
+    <Compile Include="Forms\MasterPage.cs" />
     <Compile Include="Forms\PageAbrirChamada.cs" />
+    <Compile Include="Forms\PageVerificarChamada.cs" />
     <Compile Include="IConfigPlatform.cs" />
     <Compile Include="MyListView.xaml.cs">
       <DependentUpon>MyListView.xaml</DependentUpon>
@@ -63,6 +65,7 @@
     <Compile Include="Utils\Metodos.cs" />
     <Compile Include="Utils\VO\AlunoChamadaVO.cs" />
     <Compile Include="Utils\VO\ChamadaForPresencaVO.cs" />
+    <Compile Include="Utils\VO\ChamadaVO.cs" />
     <Compile Include="Utils\VO\MateriaForChamadaVO.cs" />
     <Compile Include="Utils\VO\Retorno.cs" />
     <Compile Include="Utils\VO\UsuarioVO.cs" />

@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace ChamadaAppMobile.Forms
 {
-    public class ContentPageBase : ContentPage
+    public class ContentPageBase : MasterPage
     {
         public UsuarioVO usuario;
         

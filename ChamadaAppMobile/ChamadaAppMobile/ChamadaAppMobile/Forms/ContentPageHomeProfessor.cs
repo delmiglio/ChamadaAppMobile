@@ -13,37 +13,6 @@ namespace ChamadaAppMobile.Forms
     {
         public ContentPageHomeProfessor()
         {
-            ContentView Header = new ContentView
-            {
-                BackgroundColor = Color.FromHex("1B4B67"),
-                Padding = new Thickness(25),
-                HorizontalOptions = LayoutOptions.Fill,
-                Content = new Label
-                {
-                    Text = "Página Inicial",
-                    FontSize = 30,
-                    FontAttributes = FontAttributes.Bold,
-                    TextColor = Color.White
-                }
-            };
-
-            ContentView footer = new ContentView
-            {
-                BackgroundColor = Color.FromHex("1B4B67"),
-                Padding = new Thickness(20),
-                VerticalOptions = LayoutOptions.EndAndExpand,
-                HorizontalOptions = LayoutOptions.Fill,
-
-                Content = new Label
-                {
-                    Text = "Trabalho de Conclusão de Curso",
-                    FontSize = 20,
-                    HorizontalOptions = LayoutOptions.CenterAndExpand,
-                    FontAttributes = FontAttributes.Bold,
-                    TextColor = Color.White
-                }
-            };
-
             Label lbUsuario = new Label
             {
                 Text = "Olá, " + usuario.ToString() + ".",
@@ -81,7 +50,12 @@ namespace ChamadaAppMobile.Forms
                 BorderWidth = 5,
                 BorderColor = Color.FromHex("1B4B67"),
                 Margin = new Thickness(0, 15),
-            };           
+            };
+
+            btnVerificarChamada.Clicked += (sender, args) =>
+            {
+                App.Current.MainPage = new PageVerificarChamada(usuario);
+            };
 
             StackLayout conteudo = new StackLayout
             {
@@ -102,9 +76,9 @@ namespace ChamadaAppMobile.Forms
             {
                 Children =
                 {
-                    Header,
+                    GetHeader("Página Inicial"),
                     conteudo,
-                    footer
+                    GetFooter()
                 }
             };
 
