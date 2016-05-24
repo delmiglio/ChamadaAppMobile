@@ -14,11 +14,11 @@ using Xamarin.Forms;
 using ChamadaAppMobile.Droid;
 using System.IO;
 
-[assembly: Dependency(typeof(ConfigDB))]
+[assembly: Dependency(typeof(ConfigPlatform))]
 
 namespace ChamadaAppMobile.Droid
 {
-    public class ConfigDB : IConfigDB
+    public class ConfigPlatform : IConfigPlatform
     {
         public SQLiteConnection GetConexao()
         {
@@ -26,6 +26,11 @@ namespace ChamadaAppMobile.Droid
             string folder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
             string path = Path.Combine(folder, dbName);
             return new SQLiteConnection(path);
+        }
+
+        public void Close_App()
+        {
+            Android.OS.Process.KillProcess(Android.OS.Process.MyPid());
         }
     }
 }

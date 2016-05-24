@@ -46,9 +46,10 @@
     <Compile Include="App.cs" />
     <Compile Include="Forms\ContentPageBase.cs" />
     <Compile Include="Forms\ContentPageHomeAluno.cs" />
+    <Compile Include="Forms\ContentPageHomeProfessor.cs" />
     <Compile Include="Forms\ContentPageLogin.cs" />
-    <Compile Include="ICloseApp.cs" />
-    <Compile Include="IConfigDB.cs" />
+    <Compile Include="Forms\PageAbrirChamada.cs" />
+    <Compile Include="IConfigPlatform.cs" />
     <Compile Include="MyListView.xaml.cs">
       <DependentUpon>MyListView.xaml</DependentUpon>
     </Compile>
@@ -58,6 +59,7 @@
     <Compile Include="Utils\Enum\SitAlunoChamadaEnum.cs" />
     <Compile Include="Utils\Enum\SitChamadaEnum.cs" />
     <Compile Include="Utils\Enum\TpRetornoEnum.cs" />
+    <Compile Include="Utils\Enum\TpUsuarioEnum.cs" />
     <Compile Include="Utils\Metodos.cs" />
     <Compile Include="Utils\VO\AlunoChamadaVO.cs" />
     <Compile Include="Utils\VO\ChamadaForPresencaVO.cs" />

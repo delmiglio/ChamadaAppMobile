@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChamadaAppMobile
+namespace ChamadaAppMobile.Utils.Enum
 {
-    public interface ICloseApp
+    public enum TpUsuarioEnum
     {
-        void Close_App();
+        Aluno = 1,
+        Professor = 2
     }
 }

@@ -1,5 +1,5 @@
 ﻿using ChamadaApp.Api.Utils;
-using ChamadaApp.Domain.VO;
+using ChamadaAppMobile.VO;
 using ChamadaAppMobile.Forms;
 using ChamadaAppMobile.Services;
 using ChamadaAppMobile.Utils;
@@ -136,8 +136,8 @@ namespace ChamadaAppMobile
 
                                 if (App.DataBase.GetUsuario(user.Id) == null)
                                     App.DataBase.SaveUsuario(user);
-                                
-                                Application.Current.MainPage = new ContentPageHomeAluno();                              
+
+                                Application.Current.MainPage = App.GetHome();                          
                             }
                             else if ((TpRetornoEnum)obj.TpRetorno == TpRetornoEnum.SemRetorno)
                             {

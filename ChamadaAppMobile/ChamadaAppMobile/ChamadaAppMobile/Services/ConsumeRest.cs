@@ -16,7 +16,7 @@ namespace ChamadaAppMobile.Services
     {
         static readonly string baseURL = "http://192.168.0.11/api/";
         static readonly string getURL = baseURL + "{0}?{1}";
-        static readonly string putURL = baseURL + "chamada";
+        static readonly string putURL = baseURL + "{0}";
 
         HttpClient client;
 
@@ -48,12 +48,12 @@ namespace ChamadaAppMobile.Services
             return rootobject;
         }
 
-        public async Task<T> PutResponse<T>(string actionController, ChamadaForPresencaVO obj) where T : class
+        public async Task<T> PutResponse<T>(string actionController, object obj) where T : class
         {
             var json = JsonConvert.SerializeObject(obj);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await client.PutAsync(putURL, content);
+            var response = await client.PutAsync(string.Format(putURL, actionController), content);
 
             var JsonResult = response.Content.ReadAsStringAsync().Result;
 
@@ -61,6 +61,27 @@ namespace ChamadaAppMobile.Services
                 return null;
 
             if(response.IsSuccessStatusCode)
+            {
+                var rootobject = JsonConvert.DeserializeObject<T>(JsonResult);
+                return rootobject;
+            }
+
+            return null;
+        }
+
+        public async Task<T> PostResponse<T>(string actionController, object obj) where T : class
+        {
+            var json = JsonConvert.SerializeObject(obj);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync(string.Format(putURL, actionController), content);
+
+            var JsonResult = response.Content.ReadAsStringAsync().Result;
+
+            if (typeof(T) == typeof(string))
+                return null;
+
+            if (response.IsSuccessStatusCode)
             {
                 var rootobject = JsonConvert.DeserializeObject<T>(JsonResult);
                 return rootobject;

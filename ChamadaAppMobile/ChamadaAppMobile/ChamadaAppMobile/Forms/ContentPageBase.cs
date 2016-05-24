@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChamadaAppMobile.VO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
@@ -10,9 +11,19 @@ namespace ChamadaAppMobile.Forms
 {
     public class ContentPageBase : ContentPage
     {
+        public UsuarioVO usuario;
+        
         public ContentPageBase()
         {
+            InicializarUsuario();
+        }
 
+        /// <summary>
+        /// Pega os dados do usuario persistido no telefone
+        /// </summary>
+        private void InicializarUsuario()
+        {
+            usuario = App.DataBase.GetUniqueUser();
         }
 
         private bool _canClose = true;
@@ -26,7 +37,7 @@ namespace ChamadaAppMobile.Forms
             if (_canClose)
                 ShowExitDialog();
             else
-                DependencyService.Get<ICloseApp>().Close_App();
+                DependencyService.Get<IConfigPlatform>().Close_App();
 
             return _canClose;
         }

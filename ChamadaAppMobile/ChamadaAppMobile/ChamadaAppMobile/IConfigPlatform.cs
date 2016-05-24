@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace ChamadaAppMobile
 {
-    public interface IConfigDB
+    public interface IConfigPlatform
     {
         SQLiteConnection GetConexao();
+
+        void Close_App();
     }
 }

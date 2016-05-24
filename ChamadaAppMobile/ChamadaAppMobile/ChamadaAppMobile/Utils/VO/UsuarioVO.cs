@@ -2,7 +2,7 @@
 using SQLite;
 using System;
 
-namespace ChamadaApp.Domain.VO
+namespace ChamadaAppMobile.VO
 {
     public class UsuarioVO
     {        

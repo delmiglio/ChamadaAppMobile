@@ -1,4 +1,4 @@
-﻿using ChamadaApp.Domain.VO;
+﻿using ChamadaAppMobile.VO;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ namespace ChamadaAppMobile.Utils.DAO
 
         public UsuarioDAO()
         {
-            dataBase = DependencyService.Get<IConfigDB>().GetConexao();
+            dataBase = DependencyService.Get<IConfigPlatform>().GetConexao();
             dataBase.CreateTable<UsuarioVO>();
         }
 

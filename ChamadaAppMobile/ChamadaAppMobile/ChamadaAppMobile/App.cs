@@ -1,9 +1,6 @@
 ﻿using ChamadaAppMobile.Forms;
 using ChamadaAppMobile.Utils.DAO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using ChamadaAppMobile.Utils.Enum;
 
 using Xamarin.Forms;
 
@@ -29,12 +26,22 @@ namespace ChamadaAppMobile
             MainPage = GetHome();
         }
 
-        private ContentPage GetHome()
+        public static Page GetHome()
         {
-            if (App.DataBase.GetUniqueUser() != null)
-                return new ContentPageHomeAluno();
+            VO.UsuarioVO usuario = DataBase.GetUniqueUser();
+            ContentPage paginaRetorno = null;
+
+            if (usuario != null)
+            {
+                if ((TpUsuarioEnum)usuario.TpUsuario == TpUsuarioEnum.Aluno)
+                    paginaRetorno = new ContentPageHomeAluno();
+                else
+                    return paginaRetorno = new ContentPageHomeProfessor();
+            }                
             else
-                return new ContentPageLogin();
+                paginaRetorno = new ContentPageLogin();
+
+            return paginaRetorno;
         }
                 
         protected override void OnStart()

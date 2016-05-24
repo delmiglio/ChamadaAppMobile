@@ -1,8 +1,7 @@
 ﻿using ChamadaApp.Api.Utils;
-using ChamadaApp.Domain.VO;
+using ChamadaAppMobile.VO;
 using ChamadaAppMobile.Services;
 using ChamadaAppMobile.Utils;
-using ChamadaAppMobile.VO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +13,7 @@ using Xamarin.Forms;
 namespace ChamadaAppMobile.Forms
 {
     public class ContentPageHomeAluno : ContentPageBase
-    {
-        UsuarioVO usuario;
+    {       
         ChamadaForPresencaVO chamada;
 
         ScrollView scroll;
@@ -23,9 +21,7 @@ namespace ChamadaAppMobile.Forms
         Button btnResponderChamada;
 
         public ContentPageHomeAluno()
-        {
-            InicializarUsuario();
-
+        {     
             ContentView Header = new ContentView
             {
                 BackgroundColor = Color.FromHex("1B4B67"),
@@ -129,12 +125,7 @@ namespace ChamadaAppMobile.Forms
             this.BackgroundColor = Color.White;
 
             GetMateriaChamada();
-        }
-
-        private void InicializarUsuario()
-        {
-            usuario = App.DataBase.GetUniqueUser();
-        }
+        }        
 
         private void GetMateriaChamada()
         {
@@ -181,8 +172,6 @@ namespace ChamadaAppMobile.Forms
                                                                 (Environment.NewLine + obj.RetornoDescricao) : "");
                             dadosChamada.IsVisible = true;
                             dadosChamada.Content = lb;
-
-                            
                         }
                     });
                 }
