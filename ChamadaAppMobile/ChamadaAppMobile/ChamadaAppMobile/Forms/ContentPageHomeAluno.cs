@@ -100,7 +100,7 @@ namespace ChamadaAppMobile.Forms
 
             string parametros = string.Format("alunoId={0}", usuario.Id);
 
-            getChamada.GetResponse<Retorno>("chamada", parametros).ContinueWith(t =>
+            getChamada.GetResponse<Retorno>("alunoChamada/GetChamadaAberta", parametros).ContinueWith(t =>
             {
                 if (t.IsCompleted)
                 {
@@ -221,7 +221,7 @@ namespace ChamadaAppMobile.Forms
 
             ConsumeRest putChamada = new ConsumeRest();            
 
-            putChamada.PutResponse<Retorno>("chamada", alunoChamada).ContinueWith(t =>
+            putChamada.PutResponse<Retorno>("alunoChamada/ResponderChamada", alunoChamada).ContinueWith(t =>
             {
                 if (t.IsCompleted)
                 {

@@ -50,11 +50,9 @@
     <Compile Include="Forms\ContentPageLogin.cs" />
     <Compile Include="Forms\MasterPage.cs" />
     <Compile Include="Forms\PageAbrirChamada.cs" />
+    <Compile Include="Forms\PageListViewAluno.cs" />
     <Compile Include="Forms\PageVerificarChamada.cs" />
     <Compile Include="IConfigPlatform.cs" />
-    <Compile Include="MyListView.xaml.cs">
-      <DependentUpon>MyListView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ConsumeRest.cs" />
     <Compile Include="Utils\DAO\UsuarioDAO.cs" />
@@ -63,6 +61,7 @@
     <Compile Include="Utils\Enum\TpRetornoEnum.cs" />
     <Compile Include="Utils\Enum\TpUsuarioEnum.cs" />
     <Compile Include="Utils\Metodos.cs" />
+    <Compile Include="Utils\VO\AlunoChamadaAlteracaoVO.cs" />
     <Compile Include="Utils\VO\AlunoChamadaVO.cs" />
     <Compile Include="Utils\VO\ChamadaForPresencaVO.cs" />
     <Compile Include="Utils\VO\ChamadaVO.cs" />
@@ -117,12 +116,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="MyListView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

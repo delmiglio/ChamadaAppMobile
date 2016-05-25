@@ -78,7 +78,7 @@ namespace ChamadaAppMobile.Forms
         {
             ConsumeRest getMateria = new ConsumeRest();
 
-            getMateria.GetResponse<Retorno>("chamada", string.Format("professorId={0}", usuario.Id)).ContinueWith(t =>
+            getMateria.GetResponse<Retorno>("chamada/MateriaNovaChamada", string.Format("professorId={0}", usuario.Id)).ContinueWith(t =>
             {
                 if (t.IsCompleted)
                 {
@@ -120,7 +120,7 @@ namespace ChamadaAppMobile.Forms
         {     
             ConsumeRest postNovaChamada = new ConsumeRest();
 
-            postNovaChamada.PostResponse<Retorno>("chamada", materia).ContinueWith(t =>
+            postNovaChamada.PostResponse<Retorno>("chamada/AbrirChamada", materia).ContinueWith(t =>
             {
                 if (t.IsCompleted)
                 {

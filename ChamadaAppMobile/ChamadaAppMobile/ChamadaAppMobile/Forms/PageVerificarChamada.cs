@@ -21,7 +21,6 @@ namespace ChamadaAppMobile.Forms
 
         ContentView dadosChamada;
         Button btnEncerrarChamada;
-        Button btnConcluirChamada;
         ScrollView bodyContent = new ScrollView();
 
         public PageVerificarChamada(UsuarioVO user)
@@ -45,7 +44,10 @@ namespace ChamadaAppMobile.Forms
 
             btnEncerrarChamada.Clicked += async (sender, args) =>
             {
-                bool resposta = await DisplayAlert("ATENÇÃO", "Ao encerrar a chamada não será possível receber novas presenças!", "Fechar", "Cancelar");
+                bool resposta = await DisplayAlert("ATENÇÃO", "Ao encerrar a chamada não será possível receber novas presenças. Deseja Encerrar?", "Encerrar", "Cancelar");
+
+                if (resposta)
+                    EncerrarChamada();
             };
 
             StackLayout conteudo = new StackLayout
@@ -67,7 +69,7 @@ namespace ChamadaAppMobile.Forms
                 Children =
                 {
                     GetHeader("Manter Chamada"),
-                    conteudo,                   
+                    conteudo,
                     GetFooter()
                 }
             };
@@ -81,7 +83,7 @@ namespace ChamadaAppMobile.Forms
             ConsumeRest getChamada = new ConsumeRest();
             string parametros = string.Format("professorId={0}&sitChamadaId={1}", usuario.Id, (int)SitChamadaEnum.Aberta);
 
-            getChamada.GetResponse<Retorno>("chamada", parametros).ContinueWith(t =>
+            getChamada.GetResponse<Retorno>("chamada/ChamadaAberta", parametros).ContinueWith(t =>
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
@@ -120,7 +122,7 @@ namespace ChamadaAppMobile.Forms
         private void ExibeDadosChamada()
         {
             bodyContent.Content = new StackLayout
-            {       
+            {
                 IsVisible = true,
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
@@ -297,6 +299,46 @@ namespace ChamadaAppMobile.Forms
                     btnEncerrarChamada
                 }
             };
+        }
+
+        private void EncerrarChamada()
+        {
+            ConsumeRest encerrarChamada = new ConsumeRest();
+
+            encerrarChamada.PutResponse<Retorno>("chamada/EncerrarChamada", chamada).ContinueWith(t =>
+            {
+                if (t.IsCompleted)
+                {
+                    List<AlunoChamadaVO> alunos;
+
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+
+                        if ((TpRetornoEnum)t.Result.TpRetorno == TpRetornoEnum.Sucesso)
+                        {
+                            dadosChamada.BackgroundColor = Color.FromHex("328325");
+                            alunos = Metodos.JsonToCustomObject<AlunoChamadaVO>(t.Result.ListRetorno);
+                        }
+                        else if ((TpRetornoEnum)t.Result.TpRetorno == TpRetornoEnum.Erro)
+                        {
+                            dadosChamada.BackgroundColor = Color.FromHex("A63030");                           
+                        }
+
+                        Label lb = new Label
+                        {
+                            FontSize = 20,
+                            HorizontalOptions = LayoutOptions.CenterAndExpand,
+                            FontAttributes = FontAttributes.Bold,
+                            TextColor = Color.White
+                        };
+
+                        lb.Text = t.Result.RetornoMensagem + ((!string.IsNullOrWhiteSpace(t.Result.RetornoDescricao)) ?
+                                                                (Environment.NewLine + t.Result.RetornoDescricao) : "");
+                        dadosChamada.IsVisible = true;
+                        dadosChamada.Content = lb;
+                    });
+                }
+            });
         }
 
         protected override bool OnBackButtonPressed()
