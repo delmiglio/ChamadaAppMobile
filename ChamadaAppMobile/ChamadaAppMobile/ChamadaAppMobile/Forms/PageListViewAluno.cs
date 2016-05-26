@@ -10,7 +10,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
-
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace ChamadaAppMobile.Forms
@@ -20,6 +20,8 @@ namespace ChamadaAppMobile.Forms
         Button btnConcluirChamada;
         ChamadaVO chamada;
         ListView listAlunos;
+        StackLayout conteudo;
+        ContentView info;
 
         public PageListViewAluno(ChamadaVO chamadaAberta, List<AlunoChamadaVO> alunos)
         {
@@ -61,7 +63,7 @@ namespace ChamadaAppMobile.Forms
                 }
             };
 
-            StackLayout conteudo = new StackLayout
+            conteudo = new StackLayout
             {
                 Padding = new Thickness(10, Device.OnPlatform(20, 0, 0), 10, 5),
                 Children =
@@ -71,7 +73,7 @@ namespace ChamadaAppMobile.Forms
                 }
             };
 
-            ContentView info = GetMessageDefault();
+            info = GetMessageDefault();
 
             if (alunos == null || alunos.Count == 0)
             {
@@ -158,9 +160,41 @@ namespace ChamadaAppMobile.Forms
             {
                 if (t.IsCompleted && t.Result != null)
                 {
-                    Device.BeginInvokeOnMainThread(() =>
+                    Device.BeginInvokeOnMainThread(async () =>
                     {
-                        DisplayAlert(t.Result.RetornoMensagem, t.Result.RetornoDescricao, "OK");
+                        if ((TpRetornoEnum)t.Result.TpRetorno == TpRetornoEnum.Sucesso)
+                        {
+                            conteudo = new StackLayout
+                            {
+                                Padding = new Thickness(10, Device.OnPlatform(20, 0, 0), 10, 5),
+                                Children =
+                                {
+                                    info
+                                }
+                            };
+
+                            Label lb = new Label
+                            {
+                                FontSize = 20,
+                                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                                FontAttributes = FontAttributes.Bold,
+                                TextColor = Color.White
+                            };
+
+                            lb.Text = t.Result.RetornoMensagem + ((!string.IsNullOrWhiteSpace(t.Result.RetornoDescricao)) ?
+                                                                (Environment.NewLine + t.Result.RetornoDescricao) : "");
+
+                            info.BackgroundColor = Color.FromHex("328325");
+                            info.IsVisible = true;
+                            info.Content = lb;
+
+                            await Task.Delay(500);
+                            App.Current.MainPage = App.GetHome();
+                        }
+                        else if ((TpRetornoEnum)t.Result.TpRetorno == TpRetornoEnum.Erro)
+                        {
+                            await DisplayAlert(t.Result.RetornoMensagem, t.Result.RetornoDescricao, "OK");
+                        }
                     });
                 }
             });
@@ -174,7 +208,6 @@ namespace ChamadaAppMobile.Forms
 
                 ItemTemplate = new DataTemplate(() =>
                 {
-
                     Label titulo = new Label();
                     titulo.SetBinding(Label.TextProperty, "alunoNome");
                     titulo.FontSize = 25;
