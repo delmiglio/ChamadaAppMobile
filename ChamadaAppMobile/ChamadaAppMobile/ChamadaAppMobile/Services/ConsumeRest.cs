@@ -8,7 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using ChamadaAppMobile.VO;
 using ObjCRuntime;
-
+using ChamadaAppMobile.Utils.VO;
+using Newtonsoft.Json.Linq;
 
 namespace ChamadaAppMobile.Services
 {
@@ -23,8 +24,7 @@ namespace ChamadaAppMobile.Services
         public ConsumeRest()
         {
             client = new HttpClient();
-            client.MaxResponseContentBufferSize = 256000;
-            //Definide o Header de resultado para JSON, para evitar que seja retornado um HTML ou XML
+            client.MaxResponseContentBufferSize = 256000;            
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
@@ -36,16 +36,18 @@ namespace ChamadaAppMobile.Services
             //e o método so volte a ser executado quando o download das informações for finalizado
             var response = await client.GetAsync(string.Format(getURL, actionController, paramametros));
 
-            //Lê a string retornada
             var JsonResult = response.Content.ReadAsStringAsync().Result;
 
             if (typeof(T) == typeof(string))
-                return null;
+                return null;           
 
-            //Converte o resultado Json para uma Classe utilizando as Libs do Newtonsoft.Json
-            var rootobject = JsonConvert.DeserializeObject<T>(JsonResult);
+            if (response.IsSuccessStatusCode)
+            {
+                var rootobject = JsonConvert.DeserializeObject<T>(JsonResult);
+                return rootobject;
+            }
 
-            return rootobject;
+            return null;
         }
 
         public async Task<T> PutResponse<T>(string actionController, object obj) where T : class
@@ -73,6 +75,31 @@ namespace ChamadaAppMobile.Services
         {
             var json = JsonConvert.SerializeObject(obj);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync(string.Format(putURL, actionController), content);
+
+            var JsonResult = response.Content.ReadAsStringAsync().Result;
+
+            if (typeof(T) == typeof(string))
+                return null;
+
+            if (response.IsSuccessStatusCode)
+            {
+                var rootobject = JsonConvert.DeserializeObject<T>(JsonResult);
+                return rootobject;
+            }
+
+            return null;
+        }
+
+        public async Task<T> PostConcluirChamada<T>(string actionController, ChamadaVO chamada, List<AlunoChamadaAlteracaoVO> alunos) where T : class
+        {
+            JObject json = new JObject();
+
+            json.Add("chamada", JsonConvert.SerializeObject(chamada));
+            json.Add("alunos", JsonConvert.SerializeObject(alunos));
+
+            var content = new StringContent(json.ToString(), Encoding.UTF8, "application/json");    
 
             var response = await client.PostAsync(string.Format(putURL, actionController), content);
 

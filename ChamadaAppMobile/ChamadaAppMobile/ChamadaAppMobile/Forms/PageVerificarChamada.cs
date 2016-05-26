@@ -318,10 +318,12 @@ namespace ChamadaAppMobile.Forms
                         {
                             dadosChamada.BackgroundColor = Color.FromHex("328325");
                             alunos = Metodos.JsonToCustomObject<AlunoChamadaVO>(t.Result.ListRetorno);
+
+                            App.Current.MainPage = new PageListViewAluno(chamada, alunos);
                         }
                         else if ((TpRetornoEnum)t.Result.TpRetorno == TpRetornoEnum.Erro)
                         {
-                            dadosChamada.BackgroundColor = Color.FromHex("A63030");                           
+                            dadosChamada.BackgroundColor = Color.FromHex("A63030");
                         }
 
                         Label lb = new Label

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace ChamadaAppMobile.Utils
 {
@@ -24,6 +25,18 @@ namespace ChamadaAppMobile.Utils
             List<T> novaLista = Activator.CreateInstance<List<T>>();
 
             novaLista = JsonConvert.DeserializeObject<List<T>>(json);
+
+            return novaLista;
+        }
+
+        public static ObservableCollection<T> ListToObservableCollection<T>(List<T> lista) where T : class
+        {
+            ObservableCollection<T> novaLista = Activator.CreateInstance<ObservableCollection<T>>();
+
+            foreach(T obj in lista)
+            {
+                novaLista.Add(obj);
+            }
 
             return novaLista;
         }

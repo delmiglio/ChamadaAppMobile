@@ -1,4 +1,6 @@
-﻿using ChamadaAppMobile.Utils.VO;
+﻿using ChamadaAppMobile.Utils;
+using ChamadaAppMobile.Utils.Enum;
+using ChamadaAppMobile.Utils.VO;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,8 +18,10 @@ namespace ChamadaAppMobile.Forms
         ChamadaVO chamada;
         ListView listAlunos;
 
-        public PageListViewAluno()
+        public PageListViewAluno(ChamadaVO chamadaAberta, List<AlunoChamadaVO> alunos)
         {
+            this.chamada = chamadaAberta;
+
             Label header = new Label
             {
                 Text = "Alunos aguardando presença",
@@ -26,8 +30,6 @@ namespace ChamadaAppMobile.Forms
                 TextColor = Color.FromHex("1B4B67"),
                 FontAttributes = FontAttributes.Bold
             };
-
-            listAlunos = ConfiguraLit(Teste());
 
             StackLayout decricao = new StackLayout
             {
@@ -66,8 +68,30 @@ namespace ChamadaAppMobile.Forms
                 }
             };
 
+            ContentView info = GetMessageDefault();
+
+            if (alunos == null)
+            {
+                info.BackgroundColor = Color.FromHex("328325");
+
+                info.Content = new Label
+                {
+                    Text = "Todos os alunos responderam estão presentes. Conclua a chamada!",
+                    FontSize = 20,
+                    HorizontalOptions = LayoutOptions.CenterAndExpand,
+                    VerticalOptions = LayoutOptions.Center,
+                    FontAttributes = FontAttributes.Bold,
+                    TextColor = Color.White
+                };
+            }
+            else
+            {
+                ObservableCollection<AlunoChamadaVO> alunosNaoPresentes = Metodos.ListToObservableCollection(alunos);
+                listAlunos = ConfiguraLit(alunosNaoPresentes);
+            }
+
             if (listAlunos == null)
-                conteudo.Children.Add(GetMessageDefault());
+                conteudo.Children.Add(info);
             else
                 conteudo.Children.Add(listAlunos);
 
@@ -103,6 +127,25 @@ namespace ChamadaAppMobile.Forms
             };
         }
 
+        private void ConcluirChamada(ObservableCollection<AlunoChamadaVO> sourceList)
+        {
+            List<AlunoChamadaAlteracaoVO> alunosPresentes = new List<AlunoChamadaAlteracaoVO>();
+
+            foreach(AlunoChamadaVO aluno in sourceList)
+            {
+                if(aluno.Selected)
+                {
+                    alunosPresentes.Add(new AlunoChamadaAlteracaoVO{
+                        Id = aluno.Id,
+                        chamadaId = chamada.Id,
+                        sitAlunoChamadaId = (int)SitAlunoChamadaEnum.PresencaConfirmada
+                    });
+                }
+            }
+
+
+        }
+
         private ListView ConfiguraLit(ObservableCollection<AlunoChamadaVO> sourceList)
         {
             ListView listView = new ListView
@@ -130,7 +173,7 @@ namespace ChamadaAppMobile.Forms
                     };
                                         
                     switcher.SetBinding(Switch.IsToggledProperty, "Selected");
-
+                    
                     return new ViewCell
                     {
                         View = new StackLayout
@@ -159,28 +202,6 @@ namespace ChamadaAppMobile.Forms
             };
 
             return listView;
-        }
-        
-        private ObservableCollection<AlunoChamadaVO> Teste()
-        {
-            ObservableCollection<AlunoChamadaVO> alunos = new ObservableCollection<AlunoChamadaVO>();
-
-            for (int i = 0; i < 5; i++)
-            {
-                bool ativo = false;
-                if (i % 2 == 0)
-                    ativo = true;
-
-                alunos.Add(new AlunoChamadaVO
-                {
-                    Id = i + 1,
-                    alunoNome = "Aluno Teste " + (i + 1).ToString(),
-                    sitAlunoChamada = "Aguardando Presença",
-                    Selected = ativo
-                });
-            }
-
-            return alunos;
-        }
+        }               
     }
 }

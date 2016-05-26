@@ -39,6 +39,11 @@ namespace ChamadaAppMobile.Utils.VO
         {
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+
+            if (Selected)
+                sitAlunoChamada = "Presença Confirmada";
+            else
+                sitAlunoChamada = "Aguardando Presença";
         }
     }
 }
