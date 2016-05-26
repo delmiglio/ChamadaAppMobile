@@ -309,7 +309,7 @@ namespace ChamadaAppMobile.Forms
             {
                 if (t.IsCompleted)
                 {
-                    List<AlunoChamadaVO> alunos;
+                    List<AlunoChamadaVO> alunos = null;
 
                     Device.BeginInvokeOnMainThread(() =>
                     {
@@ -317,7 +317,9 @@ namespace ChamadaAppMobile.Forms
                         if ((TpRetornoEnum)t.Result.TpRetorno == TpRetornoEnum.Sucesso)
                         {
                             dadosChamada.BackgroundColor = Color.FromHex("328325");
-                            alunos = Metodos.JsonToCustomObject<AlunoChamadaVO>(t.Result.ListRetorno);
+
+                            if(t.Result.ListRetorno != null)
+                                alunos = Metodos.JsonToCustomObject<AlunoChamadaVO>(t.Result.ListRetorno);
 
                             App.Current.MainPage = new PageListViewAluno(chamada, alunos);
                         }

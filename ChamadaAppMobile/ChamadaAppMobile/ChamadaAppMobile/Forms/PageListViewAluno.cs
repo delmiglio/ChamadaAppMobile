@@ -1,6 +1,9 @@
-﻿using ChamadaAppMobile.Utils;
+﻿using ChamadaApp.Api.Utils;
+using ChamadaAppMobile.Services;
+using ChamadaAppMobile.Utils;
 using ChamadaAppMobile.Utils.Enum;
 using ChamadaAppMobile.Utils.VO;
+using ChamadaAppMobile.VO;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -70,13 +73,13 @@ namespace ChamadaAppMobile.Forms
 
             ContentView info = GetMessageDefault();
 
-            if (alunos == null)
+            if (alunos == null || alunos.Count == 0)
             {
                 info.BackgroundColor = Color.FromHex("328325");
 
                 info.Content = new Label
                 {
-                    Text = "Todos os alunos responderam estão presentes. Conclua a chamada!",
+                    Text = "Todos os alunos estão presentes. Conclua a chamada!",
                     FontSize = 20,
                     HorizontalOptions = LayoutOptions.CenterAndExpand,
                     VerticalOptions = LayoutOptions.Center,
@@ -84,13 +87,11 @@ namespace ChamadaAppMobile.Forms
                     TextColor = Color.White
                 };
             }
-            else
-            {
-                ObservableCollection<AlunoChamadaVO> alunosNaoPresentes = Metodos.ListToObservableCollection(alunos);
-                listAlunos = ConfiguraLit(alunosNaoPresentes);
-            }
 
-            if (listAlunos == null)
+            ObservableCollection<AlunoChamadaVO> alunosNaoPresentes = Metodos.ListToObservableCollection(alunos);
+            listAlunos = ConfiguraLit(alunosNaoPresentes);
+
+            if (alunos == null || alunos.Count == 0)
                 conteudo.Children.Add(info);
             else
                 conteudo.Children.Add(listAlunos);
@@ -111,6 +112,9 @@ namespace ChamadaAppMobile.Forms
             btnConcluirChamada.Clicked += async (sender, args) =>
             {
                 bool resposta = await DisplayAlert("ATENÇÂO", "Ao concluir a chamada a mesma não estará mais disponível para alterações. Deseja Concluir?", "Concluir", "Cancelar");
+
+                if (resposta)
+                    ConcluirChamada((listAlunos.ItemsSource as ObservableCollection<AlunoChamadaVO>));
             };
 
             this.BackgroundColor = Color.White;
@@ -131,11 +135,12 @@ namespace ChamadaAppMobile.Forms
         {
             List<AlunoChamadaAlteracaoVO> alunosPresentes = new List<AlunoChamadaAlteracaoVO>();
 
-            foreach(AlunoChamadaVO aluno in sourceList)
+            foreach (AlunoChamadaVO aluno in sourceList)
             {
-                if(aluno.Selected)
+                if (aluno.Selected)
                 {
-                    alunosPresentes.Add(new AlunoChamadaAlteracaoVO{
+                    alunosPresentes.Add(new AlunoChamadaAlteracaoVO
+                    {
                         Id = aluno.Id,
                         chamadaId = chamada.Id,
                         sitAlunoChamadaId = (int)SitAlunoChamadaEnum.PresencaConfirmada
@@ -143,7 +148,22 @@ namespace ChamadaAppMobile.Forms
                 }
             }
 
+            Retorno param = new Retorno();
+            param.ObjRetorno = chamada;
+            param.ListRetorno = alunosPresentes.Cast<object>().ToList();
 
+            ConsumeRest concluirChamada = new ConsumeRest();
+
+            concluirChamada.PostResponse<Retorno>("chamada/ConcluirChamada", param).ContinueWith(t =>
+            {
+                if (t.IsCompleted && t.Result != null)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        DisplayAlert(t.Result.RetornoMensagem, t.Result.RetornoDescricao, "OK");
+                    });
+                }
+            });
         }
 
         private ListView ConfiguraLit(ObservableCollection<AlunoChamadaVO> sourceList)
@@ -171,9 +191,9 @@ namespace ChamadaAppMobile.Forms
                         HorizontalOptions = LayoutOptions.EndAndExpand,
                         VerticalOptions = LayoutOptions.Center
                     };
-                                        
+
                     switcher.SetBinding(Switch.IsToggledProperty, "Selected");
-                    
+
                     return new ViewCell
                     {
                         View = new StackLayout
@@ -183,7 +203,7 @@ namespace ChamadaAppMobile.Forms
                             HorizontalOptions = LayoutOptions.FillAndExpand,
 
                             Children =
-                            {    
+                            {
                                  new StackLayout
                                  {
                                      VerticalOptions = LayoutOptions.Center,
@@ -194,7 +214,7 @@ namespace ChamadaAppMobile.Forms
                                          descricao
                                      }
                                  },
-                                 switcher                                
+                                 switcher
                             }
                         }
                     };
@@ -202,6 +222,6 @@ namespace ChamadaAppMobile.Forms
             };
 
             return listView;
-        }               
+        }
     }
 }
