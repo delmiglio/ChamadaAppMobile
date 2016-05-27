@@ -98,18 +98,8 @@ namespace ChamadaAppMobile.Forms
             else
                 conteudo.Children.Add(listAlunos);
 
-            btnConcluirChamada = new Button
-            {
-                Text = "CONCLUIR CHAMADA",
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                VerticalOptions = LayoutOptions.Start,
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
-                FontAttributes = FontAttributes.Bold,
-                TextColor = Color.FromHex("1B4B67"),
-                BorderWidth = 5,
-                BorderColor = Color.FromHex("1B4B67"),
-                Margin = new Thickness(0, 10),
-            };
+            btnConcluirChamada = GetButtonDefault("CONCLUIR CHAMADA");
+            btnConcluirChamada.Margin = new Thickness(0, 10);
 
             btnConcluirChamada.Clicked += async (sender, args) =>
             {
@@ -173,13 +163,7 @@ namespace ChamadaAppMobile.Forms
                                 }
                             };
 
-                            Label lb = new Label
-                            {
-                                FontSize = 20,
-                                HorizontalOptions = LayoutOptions.CenterAndExpand,
-                                FontAttributes = FontAttributes.Bold,
-                                TextColor = Color.White
-                            };
+                            Label lb = GetLabelDefaul();
 
                             lb.Text = t.Result.RetornoMensagem + ((!string.IsNullOrWhiteSpace(t.Result.RetornoDescricao)) ?
                                                                 (Environment.NewLine + t.Result.RetornoDescricao) : "");
@@ -198,6 +182,23 @@ namespace ChamadaAppMobile.Forms
                     });
                 }
             });
+        }
+
+        private ObservableCollection<AlunoChamadaVO> GetTeste()
+        {
+            ObservableCollection<AlunoChamadaVO> lista = new ObservableCollection<AlunoChamadaVO>();
+
+            for(int i = 0; i < 5; i++)
+            {
+                lista.Add(new AlunoChamadaVO
+                {
+                    Id = (i + 1),
+                    alunoNome = "Aluno Hipotético",
+                    sitAlunoChamada = "Aguardando Chamada"
+                });
+            }
+
+            return lista;
         }
 
         private ListView ConfiguraLit(ObservableCollection<AlunoChamadaVO> sourceList)
@@ -225,8 +226,8 @@ namespace ChamadaAppMobile.Forms
                         VerticalOptions = LayoutOptions.Center
                     };
 
-                    switcher.SetBinding(Switch.IsToggledProperty, "Selected");
-
+                    switcher.SetBinding(Switch.IsToggledProperty, "Selected");                    
+                    
                     return new ViewCell
                     {
                         View = new StackLayout

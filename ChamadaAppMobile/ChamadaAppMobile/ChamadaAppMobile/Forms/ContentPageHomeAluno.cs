@@ -39,18 +39,7 @@ namespace ChamadaAppMobile.Forms
                 IsVisible = false
             };
 
-            btnResponderChamada = new Button
-            {
-                Text = "Responder Chamada",
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                VerticalOptions = LayoutOptions.Start,
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
-                FontAttributes = FontAttributes.Bold,
-                TextColor = Color.FromHex("1B4B67"),
-                BorderWidth = 5,
-                BorderColor = Color.FromHex("1B4B67"),
-                Margin = new Thickness(0, 30),
-            };
+            btnResponderChamada = GetButtonDefault("Responder Chamada");            
 
             btnResponderChamada.Clicked += (sender, args) =>
             {
@@ -88,13 +77,7 @@ namespace ChamadaAppMobile.Forms
 
         private void GetMateriaChamada()
         {
-            Label lb = new Label
-            {
-                FontSize = 20,
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
-                FontAttributes = FontAttributes.Bold,
-                TextColor = Color.White
-            };
+            Label lb = GetLabelDefaul();
 
             ConsumeRest getChamada = new ConsumeRest();
 
@@ -211,13 +194,7 @@ namespace ChamadaAppMobile.Forms
 
         private void ResponderChamada(ChamadaForPresencaVO alunoChamada)
         {
-            Label lb = new Label
-            {
-                FontSize = 20,
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
-                FontAttributes = FontAttributes.Bold,
-                TextColor = Color.White
-            };
+            Label lb = GetLabelDefaul();
 
             ConsumeRest putChamada = new ConsumeRest();            
 

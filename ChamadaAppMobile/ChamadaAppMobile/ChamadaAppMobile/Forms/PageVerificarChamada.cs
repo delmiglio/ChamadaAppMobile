@@ -29,18 +29,8 @@ namespace ChamadaAppMobile.Forms
 
             dadosChamada = GetMessageDefault();
 
-            btnEncerrarChamada = new Button
-            {
-                Text = "ENCERRAR CHAMADA",
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                VerticalOptions = LayoutOptions.Start,
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
-                FontAttributes = FontAttributes.Bold,
-                TextColor = Color.FromHex("1B4B67"),
-                BorderWidth = 5,
-                BorderColor = Color.FromHex("1B4B67"),
-                Margin = new Thickness(0, 30),
-            };
+            btnEncerrarChamada = GetButtonDefault("ENCERRAR CHAMADA");
+            btnEncerrarChamada.Margin = new Thickness(0, 20, 0, 0);
 
             btnEncerrarChamada.Clicked += async (sender, args) =>
             {
@@ -102,13 +92,7 @@ namespace ChamadaAppMobile.Forms
                         dadosChamada.BackgroundColor = Color.FromHex("A63030");
                     }
 
-                    Label lb = new Label
-                    {
-                        FontSize = 20,
-                        HorizontalOptions = LayoutOptions.CenterAndExpand,
-                        FontAttributes = FontAttributes.Bold,
-                        TextColor = Color.White
-                    };
+                    Label lb = GetLabelDefaul();
 
                     lb.Text = t.Result.RetornoMensagem + ((!string.IsNullOrWhiteSpace(t.Result.RetornoDescricao)) ?
                                                             (Environment.NewLine + t.Result.RetornoDescricao) : "");
@@ -125,7 +109,7 @@ namespace ChamadaAppMobile.Forms
             {
                 IsVisible = true,
                 VerticalOptions = LayoutOptions.FillAndExpand,
-                HorizontalOptions = LayoutOptions.FillAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand,                
 
                 Children =
                 {
@@ -328,13 +312,7 @@ namespace ChamadaAppMobile.Forms
                             dadosChamada.BackgroundColor = Color.FromHex("A63030");
                         }
 
-                        Label lb = new Label
-                        {
-                            FontSize = 20,
-                            HorizontalOptions = LayoutOptions.CenterAndExpand,
-                            FontAttributes = FontAttributes.Bold,
-                            TextColor = Color.White
-                        };
+                        Label lb = GetLabelDefaul();
 
                         lb.Text = t.Result.RetornoMensagem + ((!string.IsNullOrWhiteSpace(t.Result.RetornoDescricao)) ?
                                                                 (Environment.NewLine + t.Result.RetornoDescricao) : "");

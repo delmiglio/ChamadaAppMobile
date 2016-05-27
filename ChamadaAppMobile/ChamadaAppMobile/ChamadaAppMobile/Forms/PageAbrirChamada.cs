@@ -28,18 +28,8 @@ namespace ChamadaAppMobile.Forms
 
             dadosMateria = GetMessageDefault();
 
-            btnAbrirChamada = new Button
-            {
-                Text = "ABRIR CHAMADA",
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                VerticalOptions = LayoutOptions.Start,
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
-                FontAttributes = FontAttributes.Bold,
-                TextColor = Color.FromHex("1B4B67"),
-                BorderWidth = 5,
-                BorderColor = Color.FromHex("1B4B67"),
-                Margin = new Thickness(0, 30),
-            };
+            btnAbrirChamada = GetButtonDefault("ABRIR CHAMADA");
+            btnAbrirChamada.Margin = new Thickness(0, 20, 0, 0);
 
             btnAbrirChamada.Clicked += (sender, args) =>
             {
@@ -57,7 +47,6 @@ namespace ChamadaAppMobile.Forms
                     scroll
                 }
             };
-
 
             this.Content = new StackLayout
             {
@@ -99,13 +88,7 @@ namespace ChamadaAppMobile.Forms
                             dadosMateria.BackgroundColor = Color.FromHex("A63030");
                         }
 
-                        Label lb = new Label
-                        {
-                            FontSize = 20,
-                            HorizontalOptions = LayoutOptions.CenterAndExpand,
-                            FontAttributes = FontAttributes.Bold,
-                            TextColor = Color.White
-                        };
+                        Label lb = GetLabelDefaul();
 
                         lb.Text = t.Result.RetornoMensagem + ((!string.IsNullOrWhiteSpace(t.Result.RetornoDescricao)) ?
                                                                 (Environment.NewLine + t.Result.RetornoDescricao) : "");
@@ -136,13 +119,7 @@ namespace ChamadaAppMobile.Forms
                             dadosMateria.BackgroundColor = Color.FromHex("A63030");
                         }
 
-                        Label lb = new Label
-                        {
-                            FontSize = 20,
-                            HorizontalOptions = LayoutOptions.CenterAndExpand,
-                            FontAttributes = FontAttributes.Bold,
-                            TextColor = Color.White
-                        };
+                        Label lb = GetLabelDefaul();
 
                         lb.Text = t.Result.RetornoMensagem + ((!string.IsNullOrWhiteSpace(t.Result.RetornoDescricao)) ?
                                                             (Environment.NewLine + t.Result.RetornoDescricao) : "");
@@ -159,7 +136,7 @@ namespace ChamadaAppMobile.Forms
 
             scroll.Content = new StackLayout
             {
-                HorizontalOptions = LayoutOptions.FillAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand,                
 
                 Children =
                 {

@@ -3,10 +3,7 @@ using ChamadaAppMobile.VO;
 using ChamadaAppMobile.Forms;
 using ChamadaAppMobile.Services;
 using ChamadaAppMobile.Utils;
-using ChamadaAppMobile.VO;
-using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace ChamadaAppMobile
@@ -27,7 +24,7 @@ namespace ChamadaAppMobile
 
             Entry txtLogin = new Entry
             {
-                Placeholder = "Login",
+                Placeholder = "Nº MATRÍCULA",
                 VerticalOptions = LayoutOptions.Center,
                 Keyboard = Keyboard.Numeric,
                 Opacity = 50
@@ -35,7 +32,7 @@ namespace ChamadaAppMobile
 
             Entry txtSenha = new Entry
             {
-                Placeholder = "Senha",
+                Placeholder = "SENHA",
                 VerticalOptions = LayoutOptions.Center,
                 Keyboard = Keyboard.Text,
                 IsPassword = true,

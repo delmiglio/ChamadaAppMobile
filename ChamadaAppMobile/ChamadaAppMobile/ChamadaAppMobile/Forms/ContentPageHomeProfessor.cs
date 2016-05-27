@@ -18,39 +18,18 @@ namespace ChamadaAppMobile.Forms
                 Text = "Olá, " + usuario.ToString() + ".",
                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                 TextColor = Color.FromHex("1B4B67"),
-                FontAttributes = FontAttributes.Bold
+                FontAttributes = FontAttributes.Bold,                
             };
 
-            Button btnAbriChamada = new Button
-            {
-                Text = "Abrir Nova Chamada",
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
-                FontAttributes = FontAttributes.Bold,
-                TextColor = Color.FromHex("1B4B67"),
-                BorderWidth = 5,
-                BorderColor = Color.FromHex("1B4B67"),
-                Margin = new Thickness(0, 15),
-            };
+            Button btnAbriChamada = GetButtonDefault("Abrir Nova Chamada");
 
             btnAbriChamada.Clicked += (sender, args) =>
             {
                 App.Current.MainPage = new PageAbrirChamada(usuario);
             };
 
-            Button btnVerificarChamada = new Button
-            {
-                Text = "Verificar Chamada em Andamento",
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
-                FontAttributes = FontAttributes.Bold,
-                TextColor = Color.FromHex("1B4B67"),
-                BorderWidth = 5,
-                BorderColor = Color.FromHex("1B4B67"),
-                Margin = new Thickness(0, 15),
-            };
+            Button btnVerificarChamada = GetButtonDefault("Verificar Chamada em Andamento");
+            
 
             btnVerificarChamada.Clicked += (sender, args) =>
             {
@@ -60,6 +39,7 @@ namespace ChamadaAppMobile.Forms
             StackLayout conteudo = new StackLayout
             {
                 BackgroundColor = Color.White,
+                VerticalOptions = LayoutOptions.FillAndExpand,
 
                 Children =
                 {
