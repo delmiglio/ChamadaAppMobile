@@ -113,30 +113,5 @@ namespace ChamadaAppMobile.Services
 
             return null;
         }
-
-        public async Task<T> PostConcluirChamada<T>(string actionController, ChamadaVO chamada, List<AlunoChamadaAlteracaoVO> alunos) where T : class
-        {
-            JObject json = new JObject();
-
-            json.Add("chamada", JsonConvert.SerializeObject(chamada));
-            json.Add("alunos", JsonConvert.SerializeObject(alunos));
-
-            var content = new StringContent(json.ToString(), Encoding.UTF8, "application/json");    
-
-            var response = await client.PostAsync(string.Format(putURL, actionController), content);
-
-            var JsonResult = response.Content.ReadAsStringAsync().Result;
-
-            if (typeof(T) == typeof(string))
-                return null;
-
-            if (response.IsSuccessStatusCode)
-            {
-                var rootobject = JsonConvert.DeserializeObject<T>(JsonResult);
-                return rootobject;
-            }
-
-            return null;
-        }
     }
 }

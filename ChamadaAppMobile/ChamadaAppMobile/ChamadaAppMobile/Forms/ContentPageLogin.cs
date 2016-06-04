@@ -50,7 +50,7 @@ namespace ChamadaAppMobile
                 BackgroundColor = Color.FromHex("4F95BE"),
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 VerticalOptions = LayoutOptions.CenterAndExpand
-            };            
+            };
 
             Content = new StackLayout
             {
@@ -84,14 +84,14 @@ namespace ChamadaAppMobile
             this.BackgroundColor = Color.FromHex("1B4B67");
             this.Padding = new Thickness(10);
         }
-        
+
         private void Autenticar(string login, string senha)
         {
             ConsumeRest autenticar = new ConsumeRest();
 
             UsuarioVO usuario = new UsuarioVO();
             usuario.Login = login;
-            usuario.Senha = senha;            
+            usuario.Senha = senha;
 
             autenticar.PostResponse<Retorno>("login/Autenticar", usuario).ContinueWith(t =>
             {
@@ -135,7 +135,7 @@ namespace ChamadaAppMobile
                                 if (App.DataBase.GetUsuario(user.Id) == null)
                                     App.DataBase.SaveUsuario(user);
 
-                                Autenticar();                       
+                                Autenticar();
                             }
                             else if ((TpRetornoEnum)obj.TpRetorno == TpRetornoEnum.SemRetorno)
                             {
@@ -153,7 +153,7 @@ namespace ChamadaAppMobile
 
         private void Autenticar()
         {
-            ConsumeRest autenticar = new ConsumeRest();            
+            ConsumeRest autenticar = new ConsumeRest();
 
             autenticar.PostResponse<Retorno>("login/Autenticar", App.DataBase.GetUniqueUser()).ContinueWith(t =>
             {
@@ -164,43 +164,22 @@ namespace ChamadaAppMobile
                     {
                         DisplayAlert("Falha", "Ocorreu um erro na Requisição.", "Ok");
                     });
-                }                
+                }
                 else if (t.IsCanceled)
                 {
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        DisplayAlert("Cancela", "Requisição Cancelada.", "Ok");
+                        DisplayAlert("Falha", "Requisição Cancelada.", "Ok");
                     });
                 }
                 else
                 {
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        Retorno obj;
-                        UsuarioVO user = new UsuarioVO();
-
-                        if (t.Result is Retorno)
-                        {
-                            obj = (Retorno)t.Result;
-
-                            if ((TpRetornoEnum)obj.TpRetorno == TpRetornoEnum.Sucesso)
-                            {
-                                if (obj.ObjTypeName == user.GetType().Name)
-                                {
-                                    user = Metodos.JsonToCustomObject<UsuarioVO>(obj.ObjRetorno);
-                                }
-                                
-                                Application.Current.MainPage = App.GetHome();                          
-                            }
-                            else if ((TpRetornoEnum)obj.TpRetorno == TpRetornoEnum.SemRetorno)
-                            {
-                                DisplayAlert(obj.RetornoMensagem, obj.RetornoDescricao, "Ok");
-                            }
-                            else
-                            {
-                                DisplayAlert(obj.RetornoMensagem, obj.RetornoDescricao, "Ok");
-                            }
-                        }
+                        if ((TpRetornoEnum)t.Result.TpRetorno == TpRetornoEnum.Sucesso)
+                        {                            
+                            App.GetHome();
+                        }    
                     });
                 }
             });

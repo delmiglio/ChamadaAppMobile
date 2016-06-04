@@ -173,7 +173,7 @@ namespace ChamadaAppMobile.Forms
                             info.Content = lb;
 
                             await Task.Delay(500);
-                            App.Current.MainPage = App.GetHome();
+                            App.GetHome();
                         }
                         else if ((TpRetornoEnum)t.Result.TpRetorno == TpRetornoEnum.Erro)
                         {

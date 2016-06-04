@@ -1,4 +1,6 @@
-﻿using ChamadaAppMobile.VO;
+﻿using ChamadaApp.Api.Utils;
+using ChamadaAppMobile.Services;
+using ChamadaAppMobile.VO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +26,28 @@ namespace ChamadaAppMobile.Forms
         private void InicializarUsuario()
         {
             usuario = App.DataBase.GetUniqueUser();
+        }
+
+        public void VerificaAcesso()
+        {
+            ConsumeRest verificarAcesso = new ConsumeRest();
+
+            verificarAcesso.PostResponse<VO.Retorno>("login/ValidaAcesso", usuario).ContinueWith(t =>
+            {
+                if (t.IsCompleted)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        if ((TpRetornoEnum)t.Result.TpRetorno != TpRetornoEnum.Sucesso)
+                        {
+                            App.DataBase.DeleteAll();
+
+                            DisplayAlert(t.Result.RetornoMensagem, t.Result.RetornoDescricao, "OK");
+                            App.GetHome();
+                        }
+                    });
+                }
+            });
         }
 
         private bool _canClose = true;

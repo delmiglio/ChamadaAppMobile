@@ -325,7 +325,7 @@ namespace ChamadaAppMobile.Forms
 
         protected override bool OnBackButtonPressed()
         {
-            App.Current.MainPage = App.GetHome();
+            App.GetHome();
             return true;
         }
     }

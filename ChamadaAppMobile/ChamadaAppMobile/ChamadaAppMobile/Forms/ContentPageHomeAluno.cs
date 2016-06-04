@@ -72,6 +72,8 @@ namespace ChamadaAppMobile.Forms
 
             this.BackgroundColor = Color.White;
 
+            VerificaAcesso();
+
             GetMateriaChamada();
         }        
 

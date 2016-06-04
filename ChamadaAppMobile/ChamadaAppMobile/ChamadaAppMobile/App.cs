@@ -1,15 +1,17 @@
-﻿using ChamadaAppMobile.Forms;
+﻿using ChamadaApp.Api.Utils;
+using ChamadaAppMobile.Forms;
+using ChamadaAppMobile.Services;
 using ChamadaAppMobile.Utils.DAO;
 using ChamadaAppMobile.Utils.Enum;
-
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace ChamadaAppMobile
 {
     public class App : Application
     {
-        static UsuarioDAO dataBase;
-
+        static UsuarioDAO dataBase;        
+        
         public static UsuarioDAO DataBase
         {
             get
@@ -23,10 +25,10 @@ namespace ChamadaAppMobile
 
         public App()
         {
-            MainPage = GetHome();
-        }
+            GetHome();
+        }        
 
-        public static Page GetHome()
+        public static void GetHome()
         {
             VO.UsuarioVO usuario = DataBase.GetUniqueUser();
             ContentPage paginaRetorno = null;
@@ -36,17 +38,17 @@ namespace ChamadaAppMobile
                 if ((TpUsuarioEnum)usuario.TpUsuario == TpUsuarioEnum.Aluno)
                     paginaRetorno = new ContentPageHomeAluno();
                 else
-                    return paginaRetorno = new ContentPageHomeProfessor();
-            }                
+                    paginaRetorno = new ContentPageHomeProfessor();
+            }
             else
                 paginaRetorno = new ContentPageLogin();
 
-            return paginaRetorno;
+             App.Current.MainPage = paginaRetorno;
         }
-                
+
         protected override void OnStart()
         {
-            
+
         }
 
         protected override void OnSleep()
