@@ -28,13 +28,19 @@ namespace ChamadaAppMobile.Services
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public async Task<T> GetResponse<T>(string actionController, string paramametros) where T : class
+        /// <summary>
+        /// Esse método é responsável por realizar requisições com o verbo HttpGet
+        /// </summary>
+        /// <typeparam name="T">Objeto genérico que será retornado</typeparam>
+        /// <param name="controllerAction">a controller com sua a devida action name do recurso desejado</param>
+        /// <param name="paramametros">os parametros que o método da controller deverá receber para retornar os dados</param>
+        /// <returns>O objeto genérico contendo os dados retornados ou null</returns>
+        public async Task<T> GetResponse<T>(string controllerAction, string paramametros) where T : class
         {            
-            //Formata a Url com o metodo e o parametro enviado e inicia o acesso a Api. Como o acesso será por meio
-            //da Internet, pode demorar muito, para que o aplicativo não trave usamos um método assincrono
-            //e colocamos a keyword AWAIT, para que a Thread principal - UI - continuo sendo executada
-            //e o método so volte a ser executado quando o download das informações for finalizado
-            var response = await client.GetAsync(string.Format(getURL, actionController, paramametros));
+            //Formata a Url com o metodo e o parametro enviado e inicia o acesso a Api. 
+            //Await foi utilizado para que o aplicativo não trave qdo estiver aguardano o retorno dos dados.
+            //Tornando-o assincrono para que a thread principal continue em execução.
+            var response = await client.GetAsync(string.Format(getURL, controllerAction, paramametros));
 
             var JsonResult = response.Content.ReadAsStringAsync().Result;
 
@@ -50,12 +56,20 @@ namespace ChamadaAppMobile.Services
             return null;
         }
 
-        public async Task<T> PutResponse<T>(string actionController, object obj) where T : class
+        /// <summary>
+        /// Esse método é responsável por realizar requisições com o verbo HttpPut
+        /// </summary>
+        /// <typeparam name="T">Objeto genérico que será retornado</typeparam>
+        /// <param name="controllerAction">a controller com sua a devida action name do recurso desejado</param>
+        /// <param name="obj">o objeto que será realizado o update</param>
+        /// <returns>Retorna o objeto devolvido pelo método REST acessado na API, caso o mesmo contenha retorno</returns>
+        public async Task<T> PutResponse<T>(string controllerAction, object obj) where T : class
         {
+            //No caso de HttpPut, a requisição deverá conter um objeto em formato JSON
             var json = JsonConvert.SerializeObject(obj);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await client.PutAsync(string.Format(putURL, actionController), content);
+            var response = await client.PutAsync(string.Format(putURL, controllerAction), content);
 
             var JsonResult = response.Content.ReadAsStringAsync().Result;
 
@@ -71,12 +85,20 @@ namespace ChamadaAppMobile.Services
             return null;
         }
 
-        public async Task<T> PostResponse<T>(string actionController, object obj) where T : class
+        /// <summary>
+        /// Esse método é responsável por realizar requisições com o verbo HttpPost
+        /// </summary>
+        /// <typeparam name="T">Objeto genérico que será retornado</typeparam>
+        /// <param name="controllerAction">a controller com sua a devida action name do recurso desejado</param>
+        /// <param name="obj">o objeto que será realizado o post</param>
+        /// <returns>Retorna o objeto devolvido pelo método REST acessado na API, caso o mesmo contenha retorno</returns>
+        public async Task<T> PostResponse<T>(string controllerAction, object obj) where T : class
         {
+            //No caso de HttpPost, a requisição deverá conter um objeto em formato JSON
             var json = JsonConvert.SerializeObject(obj);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync(string.Format(putURL, actionController), content);
+            var response = await client.PostAsync(string.Format(putURL, controllerAction), content);
 
             var JsonResult = response.Content.ReadAsStringAsync().Result;
 

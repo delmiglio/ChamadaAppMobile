@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2014/deployment" AppPlatformVersion="8.1">
   <DefaultLanguage xmlns="" code="en-US" />
+  <Languages xmlns="">
+    <Language code="pt-BR" />
+  </Languages>
   <App xmlns="" ProductID="{b7bf83e4-9ecf-4fc7-83da-6ae49613ea1a}" Title="ChamadaAppMobile.WinPhone" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="ChamadaAppMobile.WinPhone author" Description="Sample description" Publisher="ChamadaAppMobile.WinPhone" PublisherID="{28fd30a5-acb5-4acc-8f00-1d0802950ed1}">
     <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>

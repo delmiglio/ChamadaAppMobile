@@ -1,5 +1,4 @@
-﻿using System;
-using SQLite;
+﻿using SQLite;
 using System.IO;
 using Windows.Storage;
 using Xamarin.Forms;
@@ -21,6 +20,11 @@ namespace ChamadaAppMobile.WinPhone
         public void Close_App()
         {
             System.Windows.Application.Current.Terminate();
+        }
+
+        public string GetDeviceId()
+        {
+            return null;
         }
     }
 }

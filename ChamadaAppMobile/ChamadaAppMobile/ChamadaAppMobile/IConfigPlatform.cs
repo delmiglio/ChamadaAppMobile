@@ -12,5 +12,7 @@ namespace ChamadaAppMobile
         SQLiteConnection GetConexao();
 
         void Close_App();
+
+        string GetDeviceId();
     }
 }

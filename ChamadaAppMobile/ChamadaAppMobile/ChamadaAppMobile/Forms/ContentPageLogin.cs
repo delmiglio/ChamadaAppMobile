@@ -52,6 +52,26 @@ namespace ChamadaAppMobile
                 VerticalOptions = LayoutOptions.CenterAndExpand
             };
 
+            Button teste = new Button
+            {
+                Text = "Device ID",
+                Font = Font.SystemFontOfSize(NamedSize.Medium),
+                FontAttributes = FontAttributes.Bold,
+                BorderWidth = 2,
+                BorderRadius = 2,
+                BorderColor = Color.White,
+                BackgroundColor = Color.FromHex("4F95BE"),
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                VerticalOptions = LayoutOptions.CenterAndExpand
+            };
+
+            teste.Clicked += (sender, args) =>
+            {
+                string deviceId = DependencyService.Get<IConfigPlatform>().GetDeviceId();
+
+                DisplayAlert("DEVICE ID", deviceId, "OK");
+            };
+
             Content = new StackLayout
             {
                 Children =
@@ -59,7 +79,8 @@ namespace ChamadaAppMobile
                     labelLogin,
                     txtLogin,
                     txtSenha,
-                    btnLogar
+                    btnLogar,
+                    teste
                 }
             };
 
