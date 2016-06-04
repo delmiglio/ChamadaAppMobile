@@ -23,10 +23,7 @@ namespace ChamadaAppMobile.VO
 
         [MaxLength(200)]
         public string Token { get; set; }
-
-        [MaxLength(500)]
-        public string DeviceId { get; set; }
-
+        
         public int TpUsuario { get; set; }
 
         public string DtCriacao { get; set; }

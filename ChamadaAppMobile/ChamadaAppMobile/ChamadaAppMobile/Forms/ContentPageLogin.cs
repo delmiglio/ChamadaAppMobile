@@ -50,27 +50,7 @@ namespace ChamadaAppMobile
                 BackgroundColor = Color.FromHex("4F95BE"),
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 VerticalOptions = LayoutOptions.CenterAndExpand
-            };
-
-            Button teste = new Button
-            {
-                Text = "Device ID",
-                Font = Font.SystemFontOfSize(NamedSize.Medium),
-                FontAttributes = FontAttributes.Bold,
-                BorderWidth = 2,
-                BorderRadius = 2,
-                BorderColor = Color.White,
-                BackgroundColor = Color.FromHex("4F95BE"),
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
-                VerticalOptions = LayoutOptions.CenterAndExpand
-            };
-
-            teste.Clicked += (sender, args) =>
-            {
-                string deviceId = DependencyService.Get<IConfigPlatform>().GetDeviceId();
-
-                DisplayAlert("DEVICE ID", deviceId, "OK");
-            };
+            };            
 
             Content = new StackLayout
             {
@@ -79,8 +59,7 @@ namespace ChamadaAppMobile
                     labelLogin,
                     txtLogin,
                     txtSenha,
-                    btnLogar,
-                    teste
+                    btnLogar
                 }
             };
 
@@ -108,14 +87,15 @@ namespace ChamadaAppMobile
         
         private void Autenticar(string login, string senha)
         {
-            ConsumeRest getLogin = new ConsumeRest();
+            ConsumeRest autenticar = new ConsumeRest();
 
-            string parametros = string.Format("login=\'{0}\'&senha=\'{1}\'", login, senha);
+            UsuarioVO usuario = new UsuarioVO();
+            usuario.Login = login;
+            usuario.Senha = senha;            
 
-            getLogin.GetResponse<Retorno>("login", parametros).ContinueWith(t =>
+            autenticar.PostResponse<Retorno>("login/Autenticar", usuario).ContinueWith(t =>
             {
                 //O ContinueWith é responsavel por fazer algo após o request finalizar
-
                 //Aqui verificamos se houve problema ne requisição
                 if (t.IsFaulted)
                 {
@@ -155,6 +135,61 @@ namespace ChamadaAppMobile
                                 if (App.DataBase.GetUsuario(user.Id) == null)
                                     App.DataBase.SaveUsuario(user);
 
+                                Autenticar();                       
+                            }
+                            else if ((TpRetornoEnum)obj.TpRetorno == TpRetornoEnum.SemRetorno)
+                            {
+                                DisplayAlert(obj.RetornoMensagem, obj.RetornoDescricao, "Ok");
+                            }
+                            else
+                            {
+                                DisplayAlert(obj.RetornoMensagem, obj.RetornoDescricao, "Ok");
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        private void Autenticar()
+        {
+            ConsumeRest autenticar = new ConsumeRest();            
+
+            autenticar.PostResponse<Retorno>("login/Autenticar", App.DataBase.GetUniqueUser()).ContinueWith(t =>
+            {
+                if (t.IsFaulted)
+                {
+                    Debug.WriteLine(t.Exception.Message);
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        DisplayAlert("Falha", "Ocorreu um erro na Requisição.", "Ok");
+                    });
+                }                
+                else if (t.IsCanceled)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        DisplayAlert("Cancela", "Requisição Cancelada.", "Ok");
+                    });
+                }
+                else
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        Retorno obj;
+                        UsuarioVO user = new UsuarioVO();
+
+                        if (t.Result is Retorno)
+                        {
+                            obj = (Retorno)t.Result;
+
+                            if ((TpRetornoEnum)obj.TpRetorno == TpRetornoEnum.Sucesso)
+                            {
+                                if (obj.ObjTypeName == user.GetType().Name)
+                                {
+                                    user = Metodos.JsonToCustomObject<UsuarioVO>(obj.ObjRetorno);
+                                }
+                                
                                 Application.Current.MainPage = App.GetHome();                          
                             }
                             else if ((TpRetornoEnum)obj.TpRetorno == TpRetornoEnum.SemRetorno)

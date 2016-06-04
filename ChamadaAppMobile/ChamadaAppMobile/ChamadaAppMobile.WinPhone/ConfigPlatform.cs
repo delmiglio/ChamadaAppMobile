@@ -3,6 +3,7 @@ using System.IO;
 using Windows.Storage;
 using Xamarin.Forms;
 using ChamadaAppMobile.WinPhone;
+using System;
 
 [assembly: Dependency(typeof(ConfigPlatform))]
 
@@ -20,11 +21,6 @@ namespace ChamadaAppMobile.WinPhone
         public void Close_App()
         {
             System.Windows.Application.Current.Terminate();
-        }
-
-        public string GetDeviceId()
-        {
-            return null;
-        }
+        }        
     }
 }
